@@ -101,5 +101,11 @@
   <ItemGroup>
     <Resource Include="Images\TrayIcons\tray.ico" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\RequestProcessorLib\RequestProcessorLib.csproj">
+      <Project>{f4ffb093-8aa6-4a44-a14e-bb040391c417}</Project>
+      <Name>RequestProcessorLib</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

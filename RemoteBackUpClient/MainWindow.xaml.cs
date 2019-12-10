@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Windows;
+using RequestProcessorLib.Classes;
+using RequestProcessorLib.Interfaces;
 
 
 namespace RemoteBackUpClient
@@ -9,6 +11,7 @@ namespace RemoteBackUpClient
     /// </summary>
     public partial class MainWindow : Window
     {
+        private readonly IRequestSender _requestSender = new RequestSender();
         public MainWindow()
         {
             InitializeComponent();
@@ -35,6 +38,14 @@ namespace RemoteBackUpClient
         private void TaskBarIcon_OnTrayLeftMouseUp(object sender, RoutedEventArgs e)
         {
             WindowState = WindowState.Normal;
+        }
+
+        private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
+        {
+            if (!string.IsNullOrEmpty(UrlTb.Text))
+            {
+                _requestSender.SendRequest(UrlTb.Text);
+            }
         }
     }
 }
