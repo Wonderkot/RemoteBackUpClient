@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
-
 
 namespace RequestProcessorLib.Util
 {
-     /// <summary>
+    /// <summary>
     /// Request manager encapsulates asynchronous HTTP GET and POST methods
     /// In conjunction with that, it internally caches requests made in the same minute
     /// </summary>
@@ -26,7 +26,7 @@ namespace RequestProcessorLib.Util
         /// <param name="data"></param>
         /// <param name="contentType"></param>
         /// <returns></returns>
-        public async Task<string> Post(string url, Dictionary<string, string> data, string contentType = "application/json")
+        public async Task<string> Post(string url, string data)
         {
             return await ConstructAndMakeRequest(url, HttpMethod.Post, data);
         }
@@ -44,7 +44,7 @@ namespace RequestProcessorLib.Util
         /// <summary>
         /// Build up our request
         /// </summary>
-        private async Task<string> ConstructAndMakeRequest(string url, HttpMethod method, Dictionary<string, string> postData)
+        private async Task<string> ConstructAndMakeRequest(string url, HttpMethod method, string postData)
         {
             string data;
 
@@ -53,7 +53,7 @@ namespace RequestProcessorLib.Util
             // POST or GET
             using (var client = new HttpClient())
             {
-                client.Timeout = TimeSpan.FromSeconds(3);
+                //client.Timeout = TimeSpan.FromSeconds(3);
 
                 // we have custom headers
                 if (_customHeaders != null && _customHeaders.Count > 0)
@@ -68,7 +68,10 @@ namespace RequestProcessorLib.Util
                 // POST method
                 if (method == HttpMethod.Post)
                 {
-                    var response = await client.PostAsync(url, new FormUrlEncodedContent(postData));
+                    //var formUrlEncodedContent = new FormUrlEncodedContent(postData);
+                    var content = new StringContent(postData, Encoding.UTF8, "application/json");
+
+                    var response = await client.PostAsync(url, content);
                     data = await response.Content.ReadAsStringAsync();
                 }
                 else if (method == HttpMethod.Get)

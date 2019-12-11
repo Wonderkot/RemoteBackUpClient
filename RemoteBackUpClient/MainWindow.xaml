@@ -6,38 +6,88 @@
         xmlns:local="clr-namespace:RemoteBackUpClient"
         xmlns:tb="http://www.hardcodet.net/taskbar"
         mc:Ignorable="d"
-        Title="MainWindow"
-        Icon="Images/TrayIcons/tray.ico"
-        StateChanged="MainWindow_OnStateChanged" d:DesignWidth="462.286">
+        Title="Remote Backup Client"
+        Icon="Images/cat.png"
+        StateChanged="MainWindow_OnStateChanged" Width="450" Height="300"
+        WindowStartupLocation="CenterScreen">
 
-    <TabControl Name="TabControl" Background="#FFD8D3D3">
-        <TabItem Name="MainTab">
-            <TabItem.Header>
-                <StackPanel>
-                    <Label>Main</Label>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid.Resources>
+            <Style TargetType="Label">
+                <Setter Property="Margin" Value="0,0,0,5"/>
+            </Style>
+            <Style TargetType="ComboBox">
+                <Setter Property="Margin" Value="0,0,5,5"/>
+            </Style>
+            <Style TargetType="Button">
+                <Setter Property="Margin" Value="0,0,5,5"/>
+            </Style>
+            <Style TargetType="TextBox">
+                <Setter Property="Margin" Value="0,0,5,5"/>
+            </Style>
+            <Style TargetType="TextBlock">
+                <Setter Property="Margin" Value="0,0,5,5"/>
+                <Setter Property="Background" Value="LightGray"></Setter>
+            </Style>
+        </Grid.Resources>
+        <Menu Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Margin="0,0,0,5">
+            <Menu.Resources>
+                <Style TargetType="MenuItem">
+                    <Setter Property="Margin" Value="0,0,0,5"/>
+                </Style>
+            </Menu.Resources>
+            <MenuItem Header="Файл">
+                <MenuItem Header="Закрыть" Click="MenuItem_OnClick"></MenuItem>
+            </MenuItem>
+            <MenuItem Header="Настройки"/>
+            <MenuItem Header="О программе"/>
+        </Menu>
+        <!--Folder-->
+        <Label Grid.Column="0" Grid.Row="1">Select Folder:</Label>
+
+        <Grid Grid.Column="1" Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"></RowDefinition>
+            </Grid.RowDefinitions>
+            <TextBox Grid.Column="0" Grid.Row="0" IsReadOnly="True"  Name="SelectedFolder" HorizontalAlignment="Stretch" />
+            <Button Name="SelectFolder" Click="SelectFolder_OnClick" HorizontalAlignment="Right" Grid.Column="1" Grid.Row="0" Margin="0,0,5,5" >
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="/Images/icons8-search-80.png" Height="21" Width="20" />
                 </StackPanel>
-            </TabItem.Header>
-            <TabItem.Content>
-                <Grid Margin="10">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
-                <Label Grid.Column="0" Grid.Row="0">URL: </Label>
-                <TextBox Grid.Column="1" Grid.Row="0" Margin="0,0,0,10" Name="UrlTb"/>
-                <Button Grid.Column="1" Grid.Row="2" Click="ButtonBase_OnClick">Run</Button>
-                </Grid>
-            </TabItem.Content>
-        </TabItem>
-        <tb:TaskbarIcon
+            </Button>
+        </Grid>
+        <!-- Select Db -->
+        <Label Grid.Column="0" Grid.Row="2">Select DB</Label>
+        <ComboBox Name="DbList" Grid.Column="1" Grid.Row="2"></ComboBox>
+        <!--URL-->
+        <Label Grid.Column="0" Grid.Row="3" >URL:</Label>
+        <TextBox Grid.Column="1" Grid.Row="3"  Name="UrlTb" Text="http://localhost/Permit/api/remoteBackup" />
+        <!--Button -->
+        <Button Name="ExecuteBtn" Grid.Column="1" Grid.Row="4" Click="ExecuteBtn_OnClick" HorizontalAlignment="Right"  Width="150">Run</Button>
+
+        <!-- Console-->
+        <TextBlock Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Name="Console"/>
+
+        <!--<tb:TaskbarIcon
             Name="TaskBarIcon"
             IconSource="/Images/TrayIcons/tray.ico"
-            TrayLeftMouseUp="TaskBarIcon_OnTrayLeftMouseUp"/>
-    </TabControl>
-
+            TrayLeftMouseUp="TaskBarIcon_OnTrayLeftMouseUp" />-->
+    </Grid>
 </Window>

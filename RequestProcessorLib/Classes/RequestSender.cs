@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿using System;
 using RequestProcessorLib.Interfaces;
 using RequestProcessorLib.Util;
 
@@ -14,8 +14,13 @@ namespace RequestProcessorLib.Classes
         }
         public void SendRequest(string url)
         {
-            var x = _manager.Post(url, new Dictionary<string, string>() { ["dbName"] = "RioVista" }, contentType: "Custom");
+            ShowMessage?.Invoke("Send request ... ");
+
+            var x = _manager.Post(url, "RioVista");
+
+            ShowMessage?.Invoke(x.Result);
         }
 
+        public event Action<string> ShowMessage;
     }
 }

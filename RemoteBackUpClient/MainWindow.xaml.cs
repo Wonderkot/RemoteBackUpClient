@@ -1,5 +1,10 @@
 ﻿using System;
+using System.Drawing;
+using System.Threading;
 using System.Windows;
+using System.Windows.Controls;
+using Hardcodet.Wpf.TaskbarNotification;
+using Ookii.Dialogs.Wpf;
 using RequestProcessorLib.Classes;
 using RequestProcessorLib.Interfaces;
 
@@ -15,6 +20,30 @@ namespace RemoteBackUpClient
         public MainWindow()
         {
             InitializeComponent();
+            CreateTaskBarIcon();
+            _requestSender.ShowMessage += AddTextToConsole;
+        }
+
+        private void CreateTaskBarIcon()
+        {
+            var contextMenu = new ContextMenu();
+            MenuItem item = new MenuItem()
+            {
+                Header = "Выход"
+            };
+            item.Click += ItemOnClick;
+            contextMenu.Items.Add(item);
+            TaskbarIcon tbi = new TaskbarIcon
+            {
+                Icon = Properties.Resources.tray
+            };
+            tbi.TrayLeftMouseUp += (sender, args) => { this.Close(); };
+            tbi.ContextMenu = contextMenu;
+        }
+
+        private void ItemOnClick(object sender, RoutedEventArgs e)
+        {
+            this.Close();
         }
 
         private void MainWindow_OnStateChanged(object sender, EventArgs e)
@@ -35,17 +64,52 @@ namespace RemoteBackUpClient
             }
         }
 
-        private void TaskBarIcon_OnTrayLeftMouseUp(object sender, RoutedEventArgs e)
+
+        private void ExecuteBtn_OnClick(object sender, RoutedEventArgs e)
         {
-            WindowState = WindowState.Normal;
+            var urlTbText = UrlTb.Text;
+            ExecuteBtn.IsEnabled = false;
+            if (!string.IsNullOrEmpty(urlTbText))
+            {
+                var thread = new Thread(() =>
+                {
+                    _requestSender.SendRequest(urlTbText);
+                    ExecuteBtn?.Dispatcher?.Invoke(() => { ExecuteBtn.IsEnabled = true; });
+                });
+                thread.Start();
+            }
         }
 
-        private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
+        private void SelectFolder_OnClick(object sender, RoutedEventArgs e)
         {
-            if (!string.IsNullOrEmpty(UrlTb.Text))
+            VistaFolderBrowserDialog dialog = new VistaFolderBrowserDialog();
+            dialog.Description = "Please select a folder.";
+            dialog.UseDescriptionForTitle = true; // This applies to the Vista style dialog only, not the old dialog.
+            if (!VistaFolderBrowserDialog.IsVistaFolderDialogSupported)
             {
-                _requestSender.SendRequest(UrlTb.Text);
+                MessageBox.Show(this, "Because you are not using Windows Vista or later, the regular folder browser dialog will be used. Please use Windows Vista to see the new dialog.", "Sample folder browser dialog");
             }
+
+            var showDialog = dialog.ShowDialog(this);
+
+            if (showDialog != null && showDialog == true)
+            {
+                SelectedFolder.Text = dialog.SelectedPath;
+            }
+        }
+
+        private void MenuItem_OnClick(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
+
+        private void AddTextToConsole(string msg)
+        {
+            Console?.Dispatcher?.Invoke(() =>
+            {
+                Console.Text += msg;
+                Console.Text += Environment.NewLine;
+            });
         }
     }
 }
