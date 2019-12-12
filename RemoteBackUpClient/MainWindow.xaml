@@ -1,10 +1,9 @@
 ﻿<Window x:Class="RemoteBackUpClient.MainWindow"
+        Name="MainForm"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:RemoteBackUpClient"
-        xmlns:tb="http://www.hardcodet.net/taskbar"
         mc:Ignorable="d"
         Title="Remote Backup Client"
         Icon="Images/cat.png"
@@ -22,6 +21,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
@@ -49,11 +49,11 @@
                     <Setter Property="Margin" Value="0,0,0,5"/>
                 </Style>
             </Menu.Resources>
-            <MenuItem Header="Файл">
-                <MenuItem Header="Закрыть" Click="MenuItem_OnClick"></MenuItem>
+            <MenuItem Header="File">
+                <MenuItem Header="Close" Click="MenuItem_OnClick"></MenuItem>
             </MenuItem>
-            <MenuItem Header="Настройки"/>
-            <MenuItem Header="О программе"/>
+            <MenuItem Header="Settings"/>
+            <MenuItem Header="About"/>
         </Menu>
         <!--Folder-->
         <Label Grid.Column="0" Grid.Row="1">Select Folder:</Label>
@@ -75,15 +75,17 @@
         </Grid>
         <!-- Select Db -->
         <Label Grid.Column="0" Grid.Row="2">Select DB</Label>
-        <ComboBox Name="DbList" Grid.Column="1" Grid.Row="2"></ComboBox>
+        <ComboBox Name="DbList" Grid.Column="1" Grid.Row="2"/>
         <!--URL-->
         <Label Grid.Column="0" Grid.Row="3" >URL:</Label>
         <TextBox Grid.Column="1" Grid.Row="3"  Name="UrlTb" Text="http://localhost/Permit/api/remoteBackup" />
+        <!--File Name -->
+        <Label Grid.Column="0" Grid.Row="4">File Name:</Label>
+        <TextBox Grid.Column="1" Grid.Row="4"  Name="FileNameTB"  />
         <!--Button -->
-        <Button Name="ExecuteBtn" Grid.Column="1" Grid.Row="4" Click="ExecuteBtn_OnClick" HorizontalAlignment="Right"  Width="150">Run</Button>
-
+        <Button Name="ExecuteBtn" Grid.Column="1" Grid.Row="5" Click="ExecuteBtn_OnClick" HorizontalAlignment="Right"  Width="150">Run</Button>
         <!-- Console-->
-        <TextBlock Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Name="Console"/>
+        <TextBlock Grid.Column="0" Grid.Row="6" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Name="Console"/>
 
         <!--<tb:TaskbarIcon
             Name="TaskBarIcon"

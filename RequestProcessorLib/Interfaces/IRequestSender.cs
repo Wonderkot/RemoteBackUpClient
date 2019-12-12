@@ -4,7 +4,7 @@ namespace RequestProcessorLib.Interfaces
 {
     public interface IRequestSender
     {
-        void SendRequest(string url);
+        string CreateNewBackupRequest(string url);
         event Action<string> ShowMessage;
     }
 }

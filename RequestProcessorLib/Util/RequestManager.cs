@@ -76,7 +76,8 @@ namespace RequestProcessorLib.Util
                 }
                 else if (method == HttpMethod.Get)
                 {
-                    data = await client.GetStringAsync(url);
+                    var bytes = await client.GetByteArrayAsync(url);
+                    data = Convert.ToBase64String(bytes);
                 }
                 else
                 {

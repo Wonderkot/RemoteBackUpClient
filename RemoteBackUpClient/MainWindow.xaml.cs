@@ -1,10 +1,10 @@
 ﻿using System;
-using System.Drawing;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using Hardcodet.Wpf.TaskbarNotification;
 using Ookii.Dialogs.Wpf;
+using RemoteBackUpClient.Utils;
 using RequestProcessorLib.Classes;
 using RequestProcessorLib.Interfaces;
 
@@ -29,16 +29,35 @@ namespace RemoteBackUpClient
             var contextMenu = new ContextMenu();
             MenuItem item = new MenuItem()
             {
-                Header = "Выход"
+                Header = "Close"
             };
             item.Click += ItemOnClick;
             contextMenu.Items.Add(item);
             TaskbarIcon tbi = new TaskbarIcon
             {
-                Icon = Properties.Resources.tray
+                Icon = Properties.Resources.cat1
             };
-            tbi.TrayLeftMouseUp += (sender, args) => { this.Close(); };
+            tbi.TrayLeftMouseUp += (sender, args) =>
+            {
+                switch (WindowState)
+                {
+                    case WindowState.Normal:
+                        WindowState = WindowState.Minimized;
+                        break;
+                    case WindowState.Minimized:
+                        WindowState = WindowState.Normal;
+                        break;
+                }
+                
+            };
             tbi.ContextMenu = contextMenu;
+            //TODO rework!
+            var cbItem = new ComboBoxItem();
+            cbItem.Content = "RioVista";
+            cbItem.IsSelected = true;
+            DbList.Items.Add(cbItem);
+
+            SelectedFolder.Text = @"C:\db";
         }
 
         private void ItemOnClick(object sender, RoutedEventArgs e)
@@ -68,12 +87,23 @@ namespace RemoteBackUpClient
         private void ExecuteBtn_OnClick(object sender, RoutedEventArgs e)
         {
             var urlTbText = UrlTb.Text;
+            var selectedFolderText = SelectedFolder.Text;
+            string fileName = FileNameTB.Text;
+            if (string.IsNullOrEmpty(fileName))
+            {
+                fileName = ((ListBoxItem)DbList.SelectedItem).Content + ".7z";
+            }
             ExecuteBtn.IsEnabled = false;
             if (!string.IsNullOrEmpty(urlTbText))
             {
                 var thread = new Thread(() =>
                 {
-                    _requestSender.SendRequest(urlTbText);
+                    var data = _requestSender.CreateNewBackupRequest(urlTbText);
+                    if (data != null)
+                    {
+                        FileUtils.SaveFile(data, selectedFolderText, fileName);
+                        AddTextToConsole("Saved to " + selectedFolderText);
+                    }
                     ExecuteBtn?.Dispatcher?.Invoke(() => { ExecuteBtn.IsEnabled = true; });
                 });
                 thread.Start();
