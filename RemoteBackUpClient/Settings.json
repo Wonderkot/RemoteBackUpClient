@@ -1,0 +1,9 @@
+{
+  "defaultPath": "C:\\db",
+  "selectedDb": "RioVista",
+  "list": [
+    {
+      "RioVista": "http://localhost/Permit/api/remoteBackup"
+    }
+  ]
+}
