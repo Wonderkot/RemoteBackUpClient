@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
@@ -28,8 +29,32 @@ namespace RemoteBackUpClient
             InitializeComponent();
             CreateTaskBarIcon();
             _requestSender.ShowMessage += AddTextToConsole;
-            _settings = SettingsReader.GetSettings();
-            var x = _settings.List;
+            try
+            {
+                _settings = SettingsReader.GetSettings();
+            }
+            catch (Exception e)
+            {
+                AddTextToConsole(e.Message);
+            }
+
+            if (_settings != null)
+            {
+                SelectedFolder.Text = _settings.DefaultPath;
+                FileNameTb.Text = _settings.SelectedDb;
+
+                foreach (var listItem in _settings.List)
+                {
+                    DbList.Items.Add(listItem.DbName);
+                }
+
+                if (!string.IsNullOrEmpty(_settings.SelectedDb))
+                {
+                    DbList.SelectedValue = _settings.SelectedDb;
+                    UrlTb.Text = _settings.List.FirstOrDefault(i => i.DbName == _settings.SelectedDb)?.Url ?? string.Empty;
+                }
+
+            }
         }
 
         private void CreateTaskBarIcon()
@@ -59,18 +84,19 @@ namespace RemoteBackUpClient
 
             };
             tbi.ContextMenu = contextMenu;
-            //TODO rework!
-            var cbItem = new ComboBoxItem();
-            cbItem.Content = "RioVista";
-            cbItem.IsSelected = true;
-            DbList.Items.Add(cbItem);
-
-            SelectedFolder.Text = @"C:\db";
         }
 
         private void ItemOnClick(object sender, RoutedEventArgs e)
         {
+            SaveSettings();
             this.Close();
+        }
+
+        private void SaveSettings()
+        {
+            _settings.SelectedDb = DbList.SelectionBoxItem.ToString();
+            _settings.DefaultPath = SelectedFolder.Text;
+            SettingsReader.Save(_settings);
         }
 
         private void MainWindow_OnStateChanged(object sender, EventArgs e)
@@ -168,6 +194,7 @@ namespace RemoteBackUpClient
 
         private void MenuItem_OnClick(object sender, RoutedEventArgs e)
         {
+            SaveSettings();
             Close();
         }
 

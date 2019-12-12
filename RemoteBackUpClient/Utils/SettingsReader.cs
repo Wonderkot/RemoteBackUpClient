@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using RemoteBackUpClient.Data;
 
 namespace RemoteBackUpClient.Utils
@@ -29,7 +30,31 @@ namespace RemoteBackUpClient.Utils
             }
 
             Settings settings = JsonConvert.DeserializeObject<Settings>(source);
+
             return settings;
+        }
+
+        public static void Save(Settings settings)
+        {
+            var jsonStr = JsonConvert.SerializeObject(settings);
+
+            var dir = AppDomain.CurrentDomain.BaseDirectory;
+            var fileName = Path.Combine(dir, "Settings.json");
+
+            if (!File.Exists(fileName))
+            {
+                return;
+            }
+
+            try
+            {
+                File.WriteAllText(fileName, jsonStr);
+            }
+            catch (Exception e)
+            {
+                return;
+            }
+
         }
     }
 }

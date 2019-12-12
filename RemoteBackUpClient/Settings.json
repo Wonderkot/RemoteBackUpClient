@@ -3,7 +3,8 @@
   "selectedDb": "RioVista",
   "list": [
     {
-      "RioVista": "http://localhost/Permit/api/remoteBackup"
+      "dbName": "RioVista",
+      "url": "http://localhost/Permit/api/remoteBackup"
     }
   ]
 }
