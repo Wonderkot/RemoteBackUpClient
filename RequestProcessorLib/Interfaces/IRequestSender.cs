@@ -8,6 +8,6 @@ namespace RequestProcessorLib.Interfaces
         event Action<string> ShowMessage;
         string CheckLastBackup(string urlTbText, string dbName);
         string GetLastBackUp(string url, string dbName);
-        void Init();
+        void Init(Action<string> onShowMsg, Action<string> onShowBalloonMsg);
     }
 }

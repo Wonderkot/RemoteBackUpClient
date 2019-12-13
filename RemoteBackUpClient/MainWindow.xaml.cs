@@ -4,6 +4,7 @@ using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using Hardcodet.Wpf.TaskbarNotification;
+using Notifications.Wpf;
 using Ookii.Dialogs.Wpf;
 using RemoteBackUpClient.Controls;
 using RemoteBackUpClient.Data;
@@ -25,12 +26,14 @@ namespace RemoteBackUpClient
     {
         private readonly IRequestSender _requestSender = new RequestSender();
         private Settings _settings;
+        private TaskbarIcon _tbi;
+        private NotificationManager _notificationManager;
+        event Action<string> ShowMessage;
+        private event Action<string> ShowBalloonMsg;
+
         public MainWindow()
         {
             InitializeComponent();
-            CreateTaskBarIcon();
-            _requestSender.ShowMessage += AddTextToConsole;
-            _requestSender.Init();
             Init();
             Closed += OnClosed;
         }
@@ -42,6 +45,12 @@ namespace RemoteBackUpClient
 
         private void Init()
         {
+            _notificationManager = new NotificationManager();
+            CreateTaskBarIcon();
+            ShowMessage += AddTextToConsole;
+            ShowBalloonMsg += ShowBalloonTip;
+            _requestSender.Init(ShowMessage, ShowBalloonMsg);
+
             try
             {
                 _settings = SettingsReader.GetSettings();
@@ -78,11 +87,11 @@ namespace RemoteBackUpClient
             };
             item.Click += ItemOnClick;
             contextMenu.Items.Add(item);
-            TaskbarIcon tbi = new TaskbarIcon
+            _tbi = new TaskbarIcon
             {
                 Icon = Properties.Resources.cat1
             };
-            tbi.TrayLeftMouseUp += (sender, args) =>
+            _tbi.TrayLeftMouseUp += (sender, args) =>
             {
                 switch (WindowState)
                 {
@@ -95,7 +104,7 @@ namespace RemoteBackUpClient
                 }
 
             };
-            tbi.ContextMenu = contextMenu;
+            _tbi.ContextMenu = contextMenu;
         }
 
         private void ItemOnClick(object sender, RoutedEventArgs e)
@@ -283,6 +292,18 @@ namespace RemoteBackUpClient
                 UrlTb.Text = _settings.List.FirstOrDefault(i => i.DbName == DbList.SelectedValue.ToString())?.Url ?? string.Empty;
                 FileNameTb.Text = DbList.SelectedValue.ToString();
             }
+        }
+
+        public void ShowBalloonTip(string msg)
+        {
+            _tbi.ShowBalloonTip("Remote Backup", msg, BalloonIcon.Info);
+            //also show notification
+            _notificationManager.Show(new NotificationContent()
+            {
+                Title = "Remote Backup",
+                Message = msg,
+                Type = NotificationType.Information
+            });
         }
     }
 }

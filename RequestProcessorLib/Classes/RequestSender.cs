@@ -11,6 +11,7 @@ namespace RequestProcessorLib.Classes
     {
         private const string CheckFileMethod = "/CheckFile/";
         private const string GetFileMethod = "/Get/";
+        private const string DownloadCompleted = "Download completed";
         private readonly RequestManager _manager;
 
         public RequestSender()
@@ -32,7 +33,8 @@ namespace RequestProcessorLib.Classes
                     var file = jObject.File;
                     ShowMessage?.Invoke("Backup created, start downloading...");
                     Task<string> b64 = _manager.Get(url + GetFileMethod + file);
-                    ShowMessage?.Invoke("Download completed");
+                    ShowMessage?.Invoke(DownloadCompleted);
+                    ShowBalloonTip?.Invoke(DownloadCompleted);
                     return b64.Result;
                 }
             }
@@ -41,6 +43,7 @@ namespace RequestProcessorLib.Classes
         }
 
         public event Action<string> ShowMessage;
+        public event Action<string> ShowBalloonTip;
 
         public string CheckLastBackup(string url, string dbName)
         {
@@ -58,6 +61,8 @@ namespace RequestProcessorLib.Classes
                 }
 
                 ShowMessage?.Invoke(jObject.message.ToString());
+                ShowBalloonTip?.Invoke(jObject.message.ToString());
+
             }
 
             return null;
@@ -78,7 +83,8 @@ namespace RequestProcessorLib.Classes
                     var file = jObject.fileName;
                     ShowMessage?.Invoke("Start downloading...");
                     b64 = _manager.Get(url + GetFileMethod + file);
-                    ShowMessage?.Invoke("Download completed");
+                    ShowMessage?.Invoke(DownloadCompleted);
+                    ShowBalloonTip?.Invoke(DownloadCompleted);
                     return b64.Result;
                 }
                 ShowMessage?.Invoke(jObject.message.ToString());
@@ -87,9 +93,13 @@ namespace RequestProcessorLib.Classes
             return null;
         }
 
-        public void Init()
+        public void Init(Action<string> onShowMsg, Action<string> onShowBalloonMsg)
         {
+            ShowMessage = onShowMsg;
+            ShowBalloonTip = onShowBalloonMsg;
             _manager.ShowMessage = ShowMessage;
         }
+
+        
     }
 }
