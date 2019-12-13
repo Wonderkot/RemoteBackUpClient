@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Interop;
+using System.Windows.Threading;
 using Hardcodet.Wpf.TaskbarNotification;
 using Notifications.Wpf;
 using Ookii.Dialogs.Wpf;
@@ -15,13 +18,24 @@ using RequestProcessorLib.Interfaces;
 
 namespace RemoteBackUpClient
 {
+    enum ActionList
+    {
+        GetNew = 0,
+        CheckLast = 1,
+        GetLast = 2
+    }
+
+    enum CloseReason
+    {
+        EndTask,
+        Logoff,
+        User,
+        Manually
+    }
+
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    enum ActionList
-    {
-        GetNew = 0, CheckLast = 1, GetLast = 2
-    }
     public partial class MainWindow
     {
         private readonly IRequestSender _requestSender = new RequestSender();
@@ -30,6 +44,7 @@ namespace RemoteBackUpClient
         private NotificationManager _notificationManager;
         event Action<string> ShowMessage;
         private event Action<string> ShowBalloonMsg;
+        private CloseReason _closeReason;
 
         public MainWindow()
         {
@@ -76,6 +91,63 @@ namespace RemoteBackUpClient
                     UrlTb.Text = _settings.List.FirstOrDefault(i => i.DbName == _settings.SelectedDb)?.Url ?? string.Empty;
                 }
             }
+
+            //hide instead of close
+            Loaded += delegate
+            {
+                HwndSource source = (HwndSource)PresentationSource.FromDependencyObject(this);
+                source?.AddHook(WindowProc);
+            };
+            Closing += (x, y) =>
+            {
+                switch (_closeReason)
+                {
+                    case CloseReason.EndTask:
+                        break;
+                    case CloseReason.Logoff:
+                        break;
+                    case CloseReason.User:
+                        //Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background, (DispatcherOperationCallback)delegate (object o)
+                        //{
+                        //    Hide();
+                        //    return null;
+                        //}, null);
+                        WindowState = WindowState.Minimized;
+                        y.Cancel = true;
+                        break;
+                    case CloseReason.Manually:
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+            };
+        }
+
+        private IntPtr WindowProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
+        {
+            switch (msg)
+            {
+                case 0x11:
+                case 0x16:
+                    _closeReason = CloseReason.Logoff;
+                    break;
+
+                case 0x112:
+                    if (((ushort)wParam & 0xfff0) == 0xf060)
+                        _closeReason = CloseReason.User;
+                    break;
+
+                    // CloseReason.EndTask gets a 0x10 windows message which is got by CloseReason.User too,
+                    // so we have no way to identify it,
+                    // except knowing that we did not got any of the specific messages of the other CloseReasons
+            }
+            return IntPtr.Zero;
+
+        }
+
+        private static int LOWORD(int n)
+        {
+            return (n & 0xffff);
         }
 
         private void CreateTaskBarIcon()
@@ -109,6 +181,7 @@ namespace RemoteBackUpClient
 
         private void ItemOnClick(object sender, RoutedEventArgs e)
         {
+            _closeReason = CloseReason.Manually;
             Close();
         }
 
@@ -214,6 +287,7 @@ namespace RemoteBackUpClient
 
         private void MenuItem_OnClick(object sender, RoutedEventArgs e)
         {
+            _closeReason = CloseReason.Manually;
             Close();
         }
 
