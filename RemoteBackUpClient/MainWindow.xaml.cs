@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Interop;
-using System.Windows.Threading;
 using Hardcodet.Wpf.TaskbarNotification;
 using Notifications.Wpf;
 using Ookii.Dialogs.Wpf;
@@ -64,7 +62,7 @@ namespace RemoteBackUpClient
             CreateTaskBarIcon();
             ShowMessage += AddTextToConsole;
             ShowBalloonMsg += ShowBalloonTip;
-            _requestSender.Init(ShowMessage, ShowBalloonMsg);
+            _requestSender.Init(ShowMessage, ShowBalloonMsg, _settings.Login, _settings.Password);
 
             try
             {
@@ -107,11 +105,6 @@ namespace RemoteBackUpClient
                     case CloseReason.Logoff:
                         break;
                     case CloseReason.User:
-                        //Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background, (DispatcherOperationCallback)delegate (object o)
-                        //{
-                        //    Hide();
-                        //    return null;
-                        //}, null);
                         WindowState = WindowState.Minimized;
                         y.Cancel = true;
                         break;
@@ -143,11 +136,6 @@ namespace RemoteBackUpClient
             }
             return IntPtr.Zero;
 
-        }
-
-        private static int LOWORD(int n)
-        {
-            return (n & 0xffff);
         }
 
         private void CreateTaskBarIcon()
@@ -291,6 +279,10 @@ namespace RemoteBackUpClient
             Close();
         }
 
+        /// <summary>
+        /// Write messages from other services into text block
+        /// </summary>
+        /// <param name="msg"></param>
         private void AddTextToConsole(string msg)
         {
             Console?.Dispatcher?.Invoke(() =>
@@ -300,6 +292,11 @@ namespace RemoteBackUpClient
             });
         }
 
+        /// <summary>
+        /// Get last created back up file
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void GetLastBtn_OnClick(object sender, RoutedEventArgs e)
         {
             var urlTbText = UrlTb.Text;
@@ -322,6 +319,11 @@ namespace RemoteBackUpClient
             }
         }
 
+        /// <summary>
+        /// Check if exist last back up file
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void CheckBtn_OnClick(object sender, RoutedEventArgs e)
         {
             var urlTbText = UrlTb.Text;
@@ -344,12 +346,22 @@ namespace RemoteBackUpClient
             }
         }
 
+        /// <summary>
+        /// Clear console text box
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ClearBtn_OnClick(object sender, RoutedEventArgs e)
         {
             Console.Text = string.Empty;
         }
 
 
+        /// <summary>
+        /// Show settings
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void SettingsItem_OnClick(object sender, RoutedEventArgs e)
         {
             SettingsWnd settingsWnd = new SettingsWnd();

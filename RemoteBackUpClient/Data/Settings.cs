@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 
 namespace RemoteBackUpClient.Data
 {
@@ -9,23 +8,8 @@ namespace RemoteBackUpClient.Data
         public string DefaultPath { get; set; }
         public string SelectedDb { get; set; }
         public List<ListItem> List { get; set; } = new List<ListItem>();
-
-        //public Dictionary<string, string> DictionaryList
-        //{
-        //    get
-        //    {
-        //        if (_dictionaryList.Count > 0)
-        //        {
-        //            return _dictionaryList;
-        //        }
-
-        //        _dictionaryList = List.ToDictionary(i => i.DbName, i => i.Url);
-
-        //        return _dictionaryList;
-        //    }
-        //    set => _dictionaryList = value;
-        //}
-        
+        public string Password { get; set; }
+        public string Login { get; set; }
     }
 
     public class ListItem

@@ -20,6 +20,8 @@ namespace RequestProcessorLib.Util
         }
 
         public Action<string> ShowMessage { get; set; }
+        public string Login { get; set; }
+        public string Password { get; set; }
 
         /// <summary>
         /// Make an async HTTP POST request

@@ -93,13 +93,13 @@ namespace RequestProcessorLib.Classes
             return null;
         }
 
-        public void Init(Action<string> onShowMsg, Action<string> onShowBalloonMsg)
+        public void Init(Action<string> onShowMessage, Action<string> onShowBalloonMsg, string settingsLogin, string settingsPassword)
         {
-            ShowMessage = onShowMsg;
+            ShowMessage = onShowMessage;
             ShowBalloonTip = onShowBalloonMsg;
             _manager.ShowMessage = ShowMessage;
+            _manager.Login = settingsLogin;
+            _manager.Password = settingsPassword;
         }
-
-        
     }
 }
