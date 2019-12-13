@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Controls;
 using Hardcodet.Wpf.TaskbarNotification;
 using Ookii.Dialogs.Wpf;
+using RemoteBackUpClient.Controls;
 using RemoteBackUpClient.Data;
 using RemoteBackUpClient.Utils;
 using RequestProcessorLib.Classes;
@@ -20,15 +21,20 @@ namespace RemoteBackUpClient
     {
         GetNew = 0, CheckLast = 1, GetLast = 2
     }
-    public partial class MainWindow : Window
+    public partial class MainWindow
     {
         private readonly IRequestSender _requestSender = new RequestSender();
-        private readonly Settings _settings;
+        private Settings _settings;
         public MainWindow()
         {
             InitializeComponent();
             CreateTaskBarIcon();
             _requestSender.ShowMessage += AddTextToConsole;
+            Init();
+        }
+
+        private void Init()
+        {
             try
             {
                 _settings = SettingsReader.GetSettings();
@@ -37,9 +43,9 @@ namespace RemoteBackUpClient
             {
                 AddTextToConsole(e.Message);
             }
-
             if (_settings != null)
             {
+                DbList.Items.Clear();
                 SelectedFolder.Text = _settings.DefaultPath;
                 FileNameTb.Text = _settings.SelectedDb;
 
@@ -53,7 +59,6 @@ namespace RemoteBackUpClient
                     DbList.SelectedValue = _settings.SelectedDb;
                     UrlTb.Text = _settings.List.FirstOrDefault(i => i.DbName == _settings.SelectedDb)?.Url ?? string.Empty;
                 }
-
             }
         }
 
@@ -89,7 +94,7 @@ namespace RemoteBackUpClient
         private void ItemOnClick(object sender, RoutedEventArgs e)
         {
             SaveSettings();
-            this.Close();
+            Close();
         }
 
         private void SaveSettings()
@@ -123,7 +128,7 @@ namespace RemoteBackUpClient
             var urlTbText = UrlTb.Text;
             var selectedFolderText = SelectedFolder.Text;
             string fileName = FileNameTb.Text;
-            var dbName = ((ListBoxItem)DbList.SelectedItem).Content.ToString();
+            var dbName = DbList.SelectedItem.ToString();
             if (string.IsNullOrEmpty(fileName))
             {
                 fileName = dbName + ".7z";
@@ -212,7 +217,7 @@ namespace RemoteBackUpClient
             var urlTbText = UrlTb.Text;
             var selectedFolderText = SelectedFolder.Text;
             string fileName = FileNameTb.Text;
-            var dbName = ((ListBoxItem)DbList.SelectedItem).Content.ToString();
+            var dbName = DbList.SelectedItem.ToString();
             if (string.IsNullOrEmpty(fileName))
             {
                 fileName = dbName + ".7z";
@@ -234,7 +239,7 @@ namespace RemoteBackUpClient
             var urlTbText = UrlTb.Text;
             var selectedFolderText = SelectedFolder.Text;
             string fileName = FileNameTb.Text;
-            var dbName = ((ListBoxItem)DbList.SelectedItem).Content.ToString();
+            var dbName = DbList.SelectedItem.ToString();
             if (string.IsNullOrEmpty(fileName))
             {
                 fileName = dbName + ".7z";
@@ -254,6 +259,25 @@ namespace RemoteBackUpClient
         private void ClearBtn_OnClick(object sender, RoutedEventArgs e)
         {
             Console.Text = string.Empty;
+        }
+
+
+        private void SettingsItem_OnClick(object sender, RoutedEventArgs e)
+        {
+            SettingsWnd settingsWnd = new SettingsWnd();
+            settingsWnd.ShowDialog();
+            _settings = SettingsReader.GetSettings();
+            Init();
+        }
+
+
+        private void DbList_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (!string.IsNullOrEmpty(DbList?.SelectedValue?.ToString()))
+            {
+                UrlTb.Text = _settings.List.FirstOrDefault(i => i.DbName == DbList.SelectedValue.ToString())?.Url ?? string.Empty;
+                FileNameTb.Text = DbList.SelectedValue.ToString();
+            }
         }
     }
 }

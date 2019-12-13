@@ -52,10 +52,10 @@
                 </Style>
             </Menu.Resources>
             <MenuItem Header="File">
-                <MenuItem Header="Close" Click="MenuItem_OnClick"></MenuItem>
+                <MenuItem Header="Close" Click="MenuItem_OnClick" Name="CloseItem"></MenuItem>
             </MenuItem>
-            <MenuItem Header="Settings"/>
-            <MenuItem Header="About"/>
+            <MenuItem Header="Settings" Click="SettingsItem_OnClick" Name="SettingsItem"/>
+            <MenuItem Header="About" Name="AboutItem"/>
         </Menu>
         <!--Folder-->
         <Label Grid.Column="0" Grid.Row="1">Select Folder:</Label>
@@ -77,7 +77,7 @@
         </Grid>
         <!-- Select Db -->
         <Label Grid.Column="0" Grid.Row="2">Select DB</Label>
-        <ComboBox Name="DbList" Grid.Column="1" Grid.Row="2"/>
+        <ComboBox Name="DbList" Grid.Column="1" Grid.Row="2" SelectionChanged="DbList_OnSelectionChanged"/>
         <!--URL-->
         <Label Grid.Column="0" Grid.Row="3" >URL:</Label>
         <TextBox Grid.Column="1" Grid.Row="3"  Name="UrlTb" Text="http://localhost/Permit/api/remoteBackup" />

@@ -1,0 +1,35 @@
+﻿<Window x:Class="RemoteBackUpClient.Controls.SettingsWnd"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:RemoteBackUpClient.Controls"
+        mc:Ignorable="d"
+        Title="Settings" Height="350" Width="400" WindowStartupLocation="CenterScreen">
+    <Grid>
+        <Grid.Resources>
+            
+        </Grid.Resources>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <!--Grid-->
+        <DataGrid Name="SettingsGrd" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
+                  Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Margin="5" AutoGenerateColumns="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Db Name" Binding="{Binding DbName, TargetNullValue=(Enter db name)}"></DataGridTextColumn>
+                <DataGridTextColumn Header="Url" Binding="{Binding Url, TargetNullValue=(Enter url)}"></DataGridTextColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+                              
+        <!-- Buttons -->
+        <Button Name="SaveBtn" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Right" Width="100" Margin="0,0,5,5" Click="SaveBtn_OnClick">Save</Button>
+        <Button Name="CancelBtn" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Right" Width="100" Margin="0,0,120,5" Click="CancelBtn_OnClick">Cancel</Button>
+        <Button Name="ResetBtn" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Right" Width="50" Margin="5,0,0,5" Click="ResetBtn_OnClick">Reset</Button>
+    </Grid>
+</Window>

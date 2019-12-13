@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using RemoteBackUpClient.Data;
 
 namespace RemoteBackUpClient.Utils
