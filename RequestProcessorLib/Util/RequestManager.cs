@@ -19,6 +19,8 @@ namespace RequestProcessorLib.Util
             _customHeaders = customHeaders;
         }
 
+        public Action<string> ShowMessage { get; set; }
+
         /// <summary>
         /// Make an async HTTP POST request
         /// </summary>
@@ -48,13 +50,9 @@ namespace RequestProcessorLib.Util
         {
             string data;
 
-            // Check the cache first
-
             // POST or GET
             using (var client = new HttpClient())
             {
-                //client.Timeout = TimeSpan.FromSeconds(3);
-
                 // we have custom headers
                 if (_customHeaders != null && _customHeaders.Count > 0)
                 {
@@ -72,12 +70,31 @@ namespace RequestProcessorLib.Util
                     var content = new StringContent(postData, Encoding.UTF8, "application/json");
 
                     var response = await client.PostAsync(url, content);
-                    data = await response.Content.ReadAsStringAsync();
+                    if (response.IsSuccessStatusCode)
+                    {
+                        data = await response.Content.ReadAsStringAsync();
+                    }
+                    else
+                    {
+                        ShowMessage?.Invoke(response.ReasonPhrase);
+                        data = null;
+                    }
+
                 }
                 else if (method == HttpMethod.Get)
                 {
-                    var bytes = await client.GetByteArrayAsync(url);
-                    data = Convert.ToBase64String(bytes);
+                    var response = await client.GetAsync(url);
+                    if (response.IsSuccessStatusCode)
+
+                    {
+                        var bytes = response.Content.ReadAsByteArrayAsync();
+                        data = Convert.ToBase64String(bytes.Result);
+                    }
+                    else
+                    {
+                        ShowMessage?.Invoke(response.ReasonPhrase);
+                        data = null;
+                    }
                 }
                 else
                 {

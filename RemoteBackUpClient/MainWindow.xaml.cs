@@ -30,7 +30,14 @@ namespace RemoteBackUpClient
             InitializeComponent();
             CreateTaskBarIcon();
             _requestSender.ShowMessage += AddTextToConsole;
+            _requestSender.Init();
             Init();
+            Closed += OnClosed;
+        }
+
+        private void OnClosed(object sender, EventArgs e)
+        {
+            SaveSettings();
         }
 
         private void Init()
@@ -93,7 +100,6 @@ namespace RemoteBackUpClient
 
         private void ItemOnClick(object sender, RoutedEventArgs e)
         {
-            SaveSettings();
             Close();
         }
 
@@ -199,7 +205,6 @@ namespace RemoteBackUpClient
 
         private void MenuItem_OnClick(object sender, RoutedEventArgs e)
         {
-            SaveSettings();
             Close();
         }
 
