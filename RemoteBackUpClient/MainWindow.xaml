@@ -60,7 +60,7 @@
                 <MenuItem Name="ServerList" Click="ServerList_OnClick" Header="Server List"></MenuItem>
             </MenuItem>
                       
-            <MenuItem Header="About" Name="AboutItem"/>
+            <MenuItem Header="About" Name="AboutItem" Click="AboutItem_OnClick"/>
         </Menu>
         <!--Folder-->
         <Label Grid.Column="0" Grid.Row="1">Select Folder:</Label>

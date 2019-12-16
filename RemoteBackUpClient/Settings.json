@@ -1,10 +1,21 @@
 {
-  "defaultPath": "C:\\db",
-  "selectedDb": "RioVista",
-  "list": [
+  "DefaultPath": "",
+  "SelectedDb": "RioVista",
+  "List": [
     {
-      "dbName": "RioVista",
-      "url": "http://localhost/Permit/api/remoteBackup"
+      "DbName": "AlamedaTideMark",
+      "Url": "https://h3.maintstar.co/AlamedaTideMark/"
+    },
+    {
+      "DbName": "PlantCity",
+      "Url": "https://h3.maintstar.co/PlantCity/"
+    },
+    {
+      "DbName": "TinleyPark",
+      "Url": "http://h8.maintstar.co/TinleyPark/"
     }
-  ]
+
+  ],
+  "Password": "AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAZT0upkp6m0injyyL92QJFQAAAAACAAAAAAAQZgAAAAEAACAAAACV7qkacCgSi3XOICqq+7eJ87jtB/4K2gIYzvKr1RNdOwAAAAAOgAAAAAIAACAAAACwHMQtXEX0EO/zr21lys93eAtIm5LyUbK9UFGRRPahRhAAAAB3cLacgA2EiNJeWKWcgP6WQAAAADle5JbiLZhECA0bdJw8zz/SE7iA/XqGKvpaA1NqfFSSxYSRscW6aGYhAkSWvmWvJzsIVauMaMdbuQ2UubrFBRA=",
+  "Login": "Admin"
 }

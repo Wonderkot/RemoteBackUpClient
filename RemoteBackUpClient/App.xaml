@@ -2,9 +2,23 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:RemoteBackUpClient"
+             xmlns:system="clr-namespace:System;assembly=mscorlib"
+             xmlns:aboutDataProviders="clr-namespace:RemoteBackUpClient.AboutDataProviders"
              StartupUri="MainWindow.xaml"
              DispatcherUnhandledException="App_OnDispatcherUnhandledException">
     <Application.Resources>
-         
+        <aboutDataProviders:AboutAssemblyDataProvider x:Key="AboutDataProvider" />
+        <XmlDataProvider x:Key="AboutProvider" XPath="ApplicationInfo" IsAsynchronous="False" IsInitialLoadEnabled="True">
+            <x:XData>
+                <ApplicationInfo xmlns="">
+                    <Title>About</Title> 
+                    <Product>Remote Backup Client</Product>
+                    <Copyright>Copyright © 2019 </Copyright>
+                    <Description/>
+                    <Version>1.0.0.0</Version>
+                    <Link Uri="https://github.com/Wonderkot/RemoteBackUpClient">GitHub</Link>
+                </ApplicationInfo>
+            </x:XData>
+        </XmlDataProvider>
     </Application.Resources>
 </Application>

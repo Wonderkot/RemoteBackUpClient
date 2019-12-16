@@ -145,18 +145,14 @@ namespace RequestProcessorLib.Util
 
             var x = Post(url, json.ToString());
 
-            try
+            if (!string.IsNullOrEmpty(x.Result))
             {
-                if (!string.IsNullOrEmpty(x.Result))
-                {
-                    JObject j = JObject.Parse(x.Result);
-                    Token = j["AuthToken"].ToString();
-                }
+                JObject j = JObject.Parse(x.Result);
+                Token = j["AuthToken"].ToString();
             }
-            catch (Exception e)
+            else
             {
-                Console.WriteLine(e);
-                throw;
+                throw new Exception("Token is empty, cannot perform any action.");
             }
         }
 

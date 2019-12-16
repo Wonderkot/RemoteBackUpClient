@@ -210,7 +210,7 @@ namespace RemoteBackUpClient
             var urlTbText = UrlTb.Text;
             var selectedFolderText = SelectedFolder.Text;
             string fileName = FileNameTb.Text;
-            var dbName = DbList.SelectedItem.ToString();
+            var dbName = DbList.SelectedItem?.ToString();
             if (string.IsNullOrEmpty(fileName))
             {
                 fileName = dbName + ".7z";
@@ -228,6 +228,17 @@ namespace RemoteBackUpClient
 
         private void ExecuteAction(string urlTbText, string dbName, string selectedFolderText, string fileName, ActionList action)
         {
+            if (string.IsNullOrEmpty(urlTbText) || string.IsNullOrEmpty(dbName) || string.IsNullOrEmpty(fileName))
+            {
+                throw new Exception("Fields DB, URL and FileName is Required!");
+            }
+
+            if (string.IsNullOrEmpty(selectedFolderText))
+            {
+                throw new Exception("Please, select folder.");
+            }
+
+            
             ExecuteBtn.IsEnabled = false;
             CheckBtn.IsEnabled = false;
             GetLastBtn.IsEnabled = false;
@@ -315,7 +326,7 @@ namespace RemoteBackUpClient
             var urlTbText = UrlTb.Text;
             var selectedFolderText = SelectedFolder.Text;
             string fileName = FileNameTb.Text;
-            var dbName = DbList.SelectedItem.ToString();
+            var dbName = DbList.SelectedItem?.ToString();
             if (string.IsNullOrEmpty(fileName))
             {
                 fileName = dbName + ".7z";
@@ -341,7 +352,7 @@ namespace RemoteBackUpClient
             var urlTbText = UrlTb.Text;
             var selectedFolderText = SelectedFolder.Text;
             string fileName = FileNameTb.Text;
-            var dbName = DbList.SelectedItem.ToString();
+            var dbName = DbList.SelectedItem?.ToString();
             if (string.IsNullOrEmpty(fileName))
             {
                 fileName = dbName + ".7z";
@@ -404,6 +415,12 @@ namespace RemoteBackUpClient
             generalSettings.ShowDialog();
             _settings = SettingsReader.GetSettings();
             Init();
+        }
+
+        private void AboutItem_OnClick(object sender, RoutedEventArgs e)
+        {
+            About about = new About();
+            about.ShowDialog();
         }
     }
 }

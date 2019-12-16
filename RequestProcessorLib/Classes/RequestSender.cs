@@ -104,7 +104,15 @@ namespace RequestProcessorLib.Classes
         public string InvokeAction(string url, string dbName, ActionList actionList)
         {
             string result = null;
-            _manager.GetToken(url);
+            try
+            {
+                _manager.GetToken(url);
+            }
+            catch (Exception e)
+            {
+                ShowMessage?.Invoke(e.Message);
+                return null;
+            }
             switch (actionList)
             {
                 case ActionList.CreateNewBackup:
