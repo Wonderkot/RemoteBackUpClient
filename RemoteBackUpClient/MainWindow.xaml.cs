@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Security.Policy;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
@@ -12,6 +13,7 @@ using RemoteBackUpClient.Data;
 using RemoteBackUpClient.Utils;
 using RequestProcessorLib.Classes;
 using RequestProcessorLib.Interfaces;
+using Flurl;
 
 
 namespace RemoteBackUpClient
@@ -43,6 +45,8 @@ namespace RemoteBackUpClient
         event Action<string> ShowMessage;
         private event Action<string> ShowBalloonMsg;
         private CloseReason _closeReason;
+        
+
 
         public MainWindow()
         {
@@ -62,11 +66,11 @@ namespace RemoteBackUpClient
             CreateTaskBarIcon();
             ShowMessage += AddTextToConsole;
             ShowBalloonMsg += ShowBalloonTip;
-            _requestSender.Init(ShowMessage, ShowBalloonMsg, _settings.Login, _settings.Password);
 
             try
             {
                 _settings = SettingsReader.GetSettings();
+                _requestSender.Init(ShowMessage, ShowBalloonMsg, _settings.Login, _settings.Password);
             }
             catch (Exception e)
             {
@@ -223,6 +227,10 @@ namespace RemoteBackUpClient
         private void ExecuteAction(string urlTbText, string dbName, string selectedFolderText, string fileName, ActionList action)
         {
             ExecuteBtn.IsEnabled = false;
+            CheckBtn.IsEnabled = false;
+            GetLastBtn.IsEnabled = false;
+            ClearBtn.IsEnabled = false;
+
             if (!string.IsNullOrEmpty(urlTbText) && !string.IsNullOrEmpty(dbName))
             {
                 var thread = new Thread(() =>
@@ -250,6 +258,9 @@ namespace RemoteBackUpClient
                     }
 
                     ExecuteBtn?.Dispatcher?.Invoke(() => { ExecuteBtn.IsEnabled = true; });
+                    CheckBtn?.Dispatcher?.Invoke(() => { CheckBtn.IsEnabled = true; });
+                    GetLastBtn?.Dispatcher?.Invoke(() => { GetLastBtn.IsEnabled = true; });
+                    ClearBtn?.Dispatcher?.Invoke(() => { ClearBtn.IsEnabled = true; });
                 });
                 thread.Start();
             }

@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 using RequestProcessorLib.Interfaces;
 using RequestProcessorLib.Util;
+using Flurl;
 
 namespace RequestProcessorLib.Classes
 {
@@ -13,6 +14,7 @@ namespace RequestProcessorLib.Classes
         private const string GetFileMethod = "/Get/";
         private const string DownloadCompleted = "Download completed";
         private readonly RequestManager _manager;
+        private const string ApiUrl = "/api/remoteBackup";
 
         public RequestSender()
         {
@@ -21,7 +23,7 @@ namespace RequestProcessorLib.Classes
         public string CreateNewBackupRequest(string url, string dbName)
         {
             ShowMessage?.Invoke("Send request ... ");
-
+            url = url.AppendPathSegment(ApiUrl);
             Task<string> result = _manager.Post(url, dbName);
             ShowMessage?.Invoke(result.Result);
 
@@ -48,7 +50,8 @@ namespace RequestProcessorLib.Classes
         public string CheckLastBackup(string url, string dbName)
         {
             ShowMessage?.Invoke("Checking last backup ...");
-            url = string.Concat(url, CheckFileMethod, dbName);
+            url = url.AppendPathSegment(ApiUrl).AppendPathSegment(CheckFileMethod).AppendPathSegment(dbName);
+            //url = string.Concat(url, CheckFileMethod, dbName);
             Task<string> b64 = _manager.Get(url);
             if (!string.IsNullOrEmpty(b64.Result))
             {
@@ -71,7 +74,7 @@ namespace RequestProcessorLib.Classes
         public string GetLastBackUp(string url, string dbName)
         {
             ShowMessage?.Invoke("Checking for existing backup file...");
-            var checkUrl = string.Concat(url, CheckFileMethod, dbName);
+            var checkUrl = url.AppendPathSegment(ApiUrl).AppendPathSegment(CheckFileMethod).AppendPathSegment(dbName);
             Task<string> b64 = _manager.Get(checkUrl);
             if (!string.IsNullOrEmpty(b64.Result))
             {

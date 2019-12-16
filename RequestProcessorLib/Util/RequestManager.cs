@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -65,13 +66,24 @@ namespace RequestProcessorLib.Util
                     }
                 }
 
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", "asdfaqgweifgasojkbvzliudfrv");
+
                 // POST method
                 if (method == HttpMethod.Post)
                 {
                     //var formUrlEncodedContent = new FormUrlEncodedContent(postData);
                     var content = new StringContent(postData, Encoding.UTF8, "application/json");
 
-                    var response = await client.PostAsync(url, content);
+                    HttpResponseMessage response;
+                    try
+                    {
+                        response = await client.PostAsync(url, content);
+                    }
+                    catch (Exception e)
+                    {
+                        ShowMessage?.Invoke(e.Message);
+                        return null;
+                    }
                     if (response.IsSuccessStatusCode)
                     {
                         data = await response.Content.ReadAsStringAsync();
@@ -85,7 +97,16 @@ namespace RequestProcessorLib.Util
                 }
                 else if (method == HttpMethod.Get)
                 {
-                    var response = await client.GetAsync(url);
+                    HttpResponseMessage response;
+                    try
+                    {
+                        response = await client.GetAsync(url);
+                    }
+                    catch (Exception e)
+                    {
+                        ShowMessage?.Invoke(e.Message);
+                        return null;
+                    }
                     if (response.IsSuccessStatusCode)
 
                     {
