@@ -8,6 +8,10 @@ using Flurl;
 
 namespace RequestProcessorLib.Classes
 {
+    public enum ActionList
+    {
+        CreateNewBackup, CheckExistFile, GetLastBackUp
+    }
     public class RequestSender : IRequestSender
     {
         private const string CheckFileMethod = "/CheckFile/";
@@ -20,7 +24,8 @@ namespace RequestProcessorLib.Classes
         {
             _manager = new RequestManager();
         }
-        public string CreateNewBackupRequest(string url, string dbName)
+
+        private string CreateNewBackupRequest(string url, string dbName)
         {
             ShowMessage?.Invoke("Send request ... ");
             url = url.AppendPathSegment(ApiUrl);
@@ -47,7 +52,7 @@ namespace RequestProcessorLib.Classes
         public event Action<string> ShowMessage;
         public event Action<string> ShowBalloonTip;
 
-        public string CheckLastBackup(string url, string dbName)
+        private string CheckLastBackup(string url, string dbName)
         {
             ShowMessage?.Invoke("Checking last backup ...");
             url = url.AppendPathSegment(ApiUrl).AppendPathSegment(CheckFileMethod).AppendPathSegment(dbName);
@@ -71,7 +76,7 @@ namespace RequestProcessorLib.Classes
             return null;
         }
 
-        public string GetLastBackUp(string url, string dbName)
+        private string GetLastBackUp(string url, string dbName)
         {
             ShowMessage?.Invoke("Checking for existing backup file...");
             var checkUrl = url.AppendPathSegment(ApiUrl).AppendPathSegment(CheckFileMethod).AppendPathSegment(dbName);
@@ -96,6 +101,27 @@ namespace RequestProcessorLib.Classes
             return null;
         }
 
+        public string InvokeAction(string url, string dbName, ActionList actionList)
+        {
+            string result = null;
+            _manager.GetToken(url);
+            switch (actionList)
+            {
+                case ActionList.CreateNewBackup:
+                    result = CreateNewBackupRequest(url, dbName);
+                    break;
+                case ActionList.CheckExistFile:
+                    result = CheckLastBackup(url, dbName);
+                    break;
+                case ActionList.GetLastBackUp:
+                    result = GetLastBackUp(url, dbName);
+                    break;
+
+            }
+
+            return result;
+        }
+
         public void Init(Action<string> onShowMessage, Action<string> onShowBalloonMsg, string settingsLogin, string settingsPassword)
         {
             ShowMessage = onShowMessage;
@@ -103,6 +129,7 @@ namespace RequestProcessorLib.Classes
             _manager.ShowMessage = ShowMessage;
             _manager.Login = settingsLogin;
             _manager.Password = settingsPassword;
+            _manager.ResetToken();
         }
     }
 }

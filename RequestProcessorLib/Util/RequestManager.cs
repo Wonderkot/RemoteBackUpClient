@@ -4,6 +4,8 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
+using Flurl;
+using Newtonsoft.Json.Linq;
 
 namespace RequestProcessorLib.Util
 {
@@ -14,6 +16,8 @@ namespace RequestProcessorLib.Util
     public class RequestManager
     {
         private readonly Dictionary<string, string> _customHeaders;
+        private string Token { get; set; }
+        private const string AuthUrl = "/mvc/Public/auth/Logon";
 
         public RequestManager(Dictionary<string, string> customHeaders = null)
         {
@@ -29,7 +33,6 @@ namespace RequestProcessorLib.Util
         /// </summary>
         /// <param name="url"></param>
         /// <param name="data"></param>
-        /// <param name="contentType"></param>
         /// <returns></returns>
         public async Task<string> Post(string url, string data)
         {
@@ -53,6 +56,7 @@ namespace RequestProcessorLib.Util
         {
             string data;
 
+
             // POST or GET
             using (var client = new HttpClient())
             {
@@ -66,7 +70,10 @@ namespace RequestProcessorLib.Util
                     }
                 }
 
-                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", "asdfaqgweifgasojkbvzliudfrv");
+                if (!string.IsNullOrEmpty(Token))
+                {
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Token);
+                }
 
                 // POST method
                 if (method == HttpMethod.Post)
@@ -126,6 +133,36 @@ namespace RequestProcessorLib.Util
             }
 
             return data;
+        }
+
+        public void GetToken(string s)
+        {
+            var url = s.AppendPathSegment(AuthUrl);
+
+            dynamic json = new JObject();
+            json.username = Login;
+            json.password = Password;
+
+            var x = Post(url, json.ToString());
+
+            try
+            {
+                if (!string.IsNullOrEmpty(x.Result))
+                {
+                    JObject j = JObject.Parse(x.Result);
+                    Token = j["AuthToken"].ToString();
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+        }
+
+        public void ResetToken()
+        {
+            Token = null;
         }
     }
 }

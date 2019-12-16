@@ -4,7 +4,6 @@ namespace RemoteBackUpClient.Data
 {
     public class Settings
     {
-        private Dictionary<string, string> _dictionaryList = new Dictionary<string, string>();
         public string DefaultPath { get; set; }
         public string SelectedDb { get; set; }
         public List<ListItem> List { get; set; } = new List<ListItem>();

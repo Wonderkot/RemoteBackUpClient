@@ -45,6 +45,7 @@
                 <Setter Property="Margin" Value="0,0,5,5"/>
             </Style>
         </Grid.Resources>
+        <!-- Menu -->
         <Menu Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Margin="0,0,0,5">
             <Menu.Resources>
                 <Style TargetType="MenuItem">
@@ -54,7 +55,11 @@
             <MenuItem Header="File">
                 <MenuItem Header="Close" Click="MenuItem_OnClick" Name="CloseItem"></MenuItem>
             </MenuItem>
-            <MenuItem Header="Settings" Click="SettingsItem_OnClick" Name="SettingsItem"/>
+            <MenuItem Header="Settings" Name="SettingsItem">
+                <MenuItem Name="General" Click="General_OnClick" Header="General Settings"></MenuItem>
+                <MenuItem Name="ServerList" Click="ServerList_OnClick" Header="Server List"></MenuItem>
+            </MenuItem>
+                      
             <MenuItem Header="About" Name="AboutItem"/>
         </Menu>
         <!--Folder-->

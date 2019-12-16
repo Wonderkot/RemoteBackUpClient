@@ -82,12 +82,19 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Controls\GeneralSettings.xaml.cs">
+      <DependentUpon>GeneralSettings.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\SettingsWnd.xaml.cs">
       <DependentUpon>SettingsWnd.xaml</DependentUpon>
     </Compile>
     <Compile Include="Data\Settings.cs" />
     <Compile Include="Utils\FileUtils.cs" />
     <Compile Include="Utils\SettingsReader.cs" />
+    <Page Include="Controls\GeneralSettings.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\SettingsWnd.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

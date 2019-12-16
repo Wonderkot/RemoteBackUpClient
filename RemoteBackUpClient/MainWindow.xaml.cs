@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Security.Policy;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
@@ -13,18 +12,11 @@ using RemoteBackUpClient.Data;
 using RemoteBackUpClient.Utils;
 using RequestProcessorLib.Classes;
 using RequestProcessorLib.Interfaces;
-using Flurl;
+
 
 
 namespace RemoteBackUpClient
 {
-    enum ActionList
-    {
-        GetNew = 0,
-        CheckLast = 1,
-        GetLast = 2
-    }
-
     enum CloseReason
     {
         EndTask,
@@ -45,7 +37,7 @@ namespace RemoteBackUpClient
         event Action<string> ShowMessage;
         private event Action<string> ShowBalloonMsg;
         private CloseReason _closeReason;
-        
+
 
 
         public MainWindow()
@@ -70,7 +62,16 @@ namespace RemoteBackUpClient
             try
             {
                 _settings = SettingsReader.GetSettings();
-                _requestSender.Init(ShowMessage, ShowBalloonMsg, _settings.Login, _settings.Password);
+
+                if (string.IsNullOrEmpty(_settings.Password))
+                {
+                    MessageBox.Show("Password is empty!", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+                var secureString = SettingsReader.DecryptString(_settings.Password);
+                var rawPass = SettingsReader.ToInsecureString(secureString);
+
+                _requestSender.Init(ShowMessage, ShowBalloonMsg, _settings.Login, rawPass);
             }
             catch (Exception e)
             {
@@ -78,6 +79,7 @@ namespace RemoteBackUpClient
             }
             if (_settings != null)
             {
+                //bind controls to settings
                 DbList.Items.Clear();
                 SelectedFolder.Text = _settings.DefaultPath;
                 FileNameTb.Text = _settings.SelectedDb;
@@ -216,7 +218,7 @@ namespace RemoteBackUpClient
 
             try
             {
-                ExecuteAction(urlTbText, dbName, selectedFolderText, fileName, ActionList.GetNew);
+                ExecuteAction(urlTbText, dbName, selectedFolderText, fileName, ActionList.CreateNewBackup);
             }
             catch (Exception exception)
             {
@@ -238,14 +240,14 @@ namespace RemoteBackUpClient
                     string data;
                     switch (action)
                     {
-                        case ActionList.GetNew:
-                            data = _requestSender.CreateNewBackupRequest(urlTbText, dbName);
+                        case ActionList.CreateNewBackup:
+                            data = _requestSender.InvokeAction(urlTbText, dbName, action);
                             break;
-                        case ActionList.CheckLast:
-                            data = _requestSender.CheckLastBackup(urlTbText, dbName);
+                        case ActionList.CheckExistFile:
+                            data = _requestSender.InvokeAction(urlTbText, dbName, action);
                             break;
-                        case ActionList.GetLast:
-                            data = _requestSender.GetLastBackUp(urlTbText, dbName);
+                        case ActionList.GetLastBackUp:
+                            data = _requestSender.InvokeAction(urlTbText, dbName, action);
                             break;
                         default:
                             throw new ArgumentOutOfRangeException(nameof(action), action, null);
@@ -318,11 +320,10 @@ namespace RemoteBackUpClient
             {
                 fileName = dbName + ".7z";
             }
-            ExecuteBtn.IsEnabled = false;
 
             try
             {
-                ExecuteAction(urlTbText, dbName, selectedFolderText, fileName, ActionList.GetLast);
+                ExecuteAction(urlTbText, dbName, selectedFolderText, fileName, ActionList.GetLastBackUp);
             }
             catch (Exception exception)
             {
@@ -345,11 +346,10 @@ namespace RemoteBackUpClient
             {
                 fileName = dbName + ".7z";
             }
-            ExecuteBtn.IsEnabled = false;
 
             try
             {
-                ExecuteAction(urlTbText, dbName, selectedFolderText, fileName, ActionList.CheckLast);
+                ExecuteAction(urlTbText, dbName, selectedFolderText, fileName, ActionList.CheckExistFile);
             }
             catch (Exception exception)
             {
@@ -367,19 +367,6 @@ namespace RemoteBackUpClient
             Console.Text = string.Empty;
         }
 
-
-        /// <summary>
-        /// Show settings
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void SettingsItem_OnClick(object sender, RoutedEventArgs e)
-        {
-            SettingsWnd settingsWnd = new SettingsWnd();
-            settingsWnd.ShowDialog();
-            _settings = SettingsReader.GetSettings();
-            Init();
-        }
 
 
         private void DbList_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -401,6 +388,22 @@ namespace RemoteBackUpClient
                 Message = msg,
                 Type = NotificationType.Information
             });
+        }
+
+        private void ServerList_OnClick(object sender, RoutedEventArgs e)
+        {
+            SettingsWnd settingsWnd = new SettingsWnd();
+            settingsWnd.ShowDialog();
+            _settings = SettingsReader.GetSettings();
+            Init();
+        }
+
+        private void General_OnClick(object sender, RoutedEventArgs e)
+        {
+            GeneralSettings generalSettings = new GeneralSettings();
+            generalSettings.ShowDialog();
+            _settings = SettingsReader.GetSettings();
+            Init();
         }
     }
 }
