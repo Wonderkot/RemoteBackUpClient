@@ -7,20 +7,33 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RemoteBackUpClient", "Remot
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RequestProcessorLib", "RequestProcessorLib\RequestProcessorLib.csproj", "{F4FFB093-8AA6-4A44-A14E-BB040391C417}"
 EndProject
+Project("{840C416C-B8F3-42BC-B0DD-F6BB14C9F8CB}") = "Installer", "Installer\Installer.aiproj", "{E1755F60-A107-4D05-B50D-A2B7D25735F6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		All|Any CPU = All|Any CPU
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0A4460D4-3E43-42BB-AF5D-5F5DA1497342}.All|Any CPU.ActiveCfg = Release|Any CPU
+		{0A4460D4-3E43-42BB-AF5D-5F5DA1497342}.All|Any CPU.Build.0 = Release|Any CPU
 		{0A4460D4-3E43-42BB-AF5D-5F5DA1497342}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{0A4460D4-3E43-42BB-AF5D-5F5DA1497342}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0A4460D4-3E43-42BB-AF5D-5F5DA1497342}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0A4460D4-3E43-42BB-AF5D-5F5DA1497342}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F4FFB093-8AA6-4A44-A14E-BB040391C417}.All|Any CPU.ActiveCfg = Release|Any CPU
+		{F4FFB093-8AA6-4A44-A14E-BB040391C417}.All|Any CPU.Build.0 = Release|Any CPU
 		{F4FFB093-8AA6-4A44-A14E-BB040391C417}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F4FFB093-8AA6-4A44-A14E-BB040391C417}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F4FFB093-8AA6-4A44-A14E-BB040391C417}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F4FFB093-8AA6-4A44-A14E-BB040391C417}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E1755F60-A107-4D05-B50D-A2B7D25735F6}.All|Any CPU.ActiveCfg = DefaultBuild
+		{E1755F60-A107-4D05-B50D-A2B7D25735F6}.All|Any CPU.Build.0 = DefaultBuild
+		{E1755F60-A107-4D05-B50D-A2B7D25735F6}.Debug|Any CPU.ActiveCfg = DefaultBuild
+		{E1755F60-A107-4D05-B50D-A2B7D25735F6}.Debug|Any CPU.Build.0 = DefaultBuild
+		{E1755F60-A107-4D05-B50D-A2B7D25735F6}.Release|Any CPU.ActiveCfg = DefaultBuild
+		{E1755F60-A107-4D05-B50D-A2B7D25735F6}.Release|Any CPU.Build.0 = DefaultBuild
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
