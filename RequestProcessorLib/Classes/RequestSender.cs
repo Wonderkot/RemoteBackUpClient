@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 using RequestProcessorLib.Interfaces;
@@ -16,7 +17,7 @@ namespace RequestProcessorLib.Classes
     {
         private const string CheckFileMethod = "/CheckFile/";
         private const string GetFileMethod = "/Get/";
-        private const string DownloadCompleted = "Download completed";
+
         private readonly RequestManager _manager;
         private const string ApiUrl = "/api/remoteBackup";
 
@@ -25,7 +26,7 @@ namespace RequestProcessorLib.Classes
             _manager = new RequestManager();
         }
 
-        private string CreateNewBackupRequest(string url, string dbName)
+        private string CreateNewBackupRequest(string url, string dbName, string destination)
         {
             ShowMessage?.Invoke("Send request ... ");
             url = url.AppendPathSegment(ApiUrl);
@@ -39,10 +40,16 @@ namespace RequestProcessorLib.Classes
                 {
                     var file = jObject.File;
                     ShowMessage?.Invoke("Backup created, start downloading...");
-                    Task<string> b64 = _manager.Get(url + GetFileMethod + file);
-                    ShowMessage?.Invoke(DownloadCompleted);
-                    ShowBalloonTip?.Invoke(DownloadCompleted);
-                    return b64.Result;
+                    url = url.AppendPathSegment(GetFileMethod).AppendPathSegment(file);
+                    ShowMessage?.Invoke(url);
+                    var res = _manager.GetFile(url, destination);
+                    if (!string.IsNullOrEmpty(res.Result))
+                    {
+                        ShowMessage?.Invoke(res.Result);
+                        ShowBalloonTip?.Invoke(res.Result);
+                    }
+
+                    //return b64.Result;
                 }
             }
 
@@ -76,7 +83,7 @@ namespace RequestProcessorLib.Classes
             return null;
         }
 
-        private string GetLastBackUp(string url, string dbName)
+        private string GetLastBackUp(string url, string dbName, string destination)
         {
             ShowMessage?.Invoke("Checking for existing backup file...");
             var checkUrl = url.AppendPathSegment(ApiUrl).AppendPathSegment(CheckFileMethod).AppendPathSegment(dbName);
@@ -90,10 +97,15 @@ namespace RequestProcessorLib.Classes
                     ShowMessage?.Invoke($"Found {dbName} backUp created at {jObject.fileInfo}");
                     var file = jObject.fileName;
                     ShowMessage?.Invoke("Start downloading...");
-                    b64 = _manager.Get(url + GetFileMethod + file);
-                    ShowMessage?.Invoke(DownloadCompleted);
-                    ShowBalloonTip?.Invoke(DownloadCompleted);
-                    return b64.Result;
+                    url = url.AppendPathSegment(ApiUrl).AppendPathSegment(GetFileMethod).AppendPathSegment(file);
+                    var res = _manager.GetFile(url, destination);
+                    if (!string.IsNullOrEmpty(res.Result))
+                    {
+                        ShowMessage?.Invoke(res.Result);
+                        ShowBalloonTip?.Invoke(res.Result);
+                    }
+
+                    return res.Result;
                 }
                 ShowMessage?.Invoke(jObject.message.ToString());
             }
@@ -101,12 +113,13 @@ namespace RequestProcessorLib.Classes
             return null;
         }
 
-        public string InvokeAction(string url, string dbName, ActionList actionList)
+        public string InvokeAction(string url, string dbName, string destination, ActionList actionList)
         {
             string result = null;
             try
             {
                 _manager.GetToken(url);
+                Thread.Sleep(1000);
             }
             catch (Exception e)
             {
@@ -116,13 +129,13 @@ namespace RequestProcessorLib.Classes
             switch (actionList)
             {
                 case ActionList.CreateNewBackup:
-                    result = CreateNewBackupRequest(url, dbName);
+                    result = CreateNewBackupRequest(url, dbName, destination);
                     break;
                 case ActionList.CheckExistFile:
                     result = CheckLastBackup(url, dbName);
                     break;
                 case ActionList.GetLastBackUp:
-                    result = GetLastBackUp(url, dbName);
+                    result = GetLastBackUp(url, dbName, destination);
                     break;
 
             }

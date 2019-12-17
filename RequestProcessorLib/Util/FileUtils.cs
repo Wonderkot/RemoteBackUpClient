@@ -2,7 +2,7 @@
 using System.IO;
 using System.Text;
 
-namespace RemoteBackUpClient.Utils
+namespace RequestProcessorLib.Util
 {
     public static class FileUtils
     {

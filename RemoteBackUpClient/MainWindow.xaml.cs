@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Windows;
@@ -12,7 +13,7 @@ using RemoteBackUpClient.Data;
 using RemoteBackUpClient.Utils;
 using RequestProcessorLib.Classes;
 using RequestProcessorLib.Interfaces;
-
+using RequestProcessorLib.Util;
 
 
 namespace RemoteBackUpClient
@@ -211,11 +212,6 @@ namespace RemoteBackUpClient
             var selectedFolderText = SelectedFolder.Text;
             string fileName = FileNameTb.Text;
             var dbName = DbList.SelectedItem?.ToString();
-            if (string.IsNullOrEmpty(fileName))
-            {
-                fileName = dbName + ".7z";
-            }
-
             try
             {
                 ExecuteAction(urlTbText, dbName, selectedFolderText, fileName, ActionList.CreateNewBackup);
@@ -228,17 +224,7 @@ namespace RemoteBackUpClient
 
         private void ExecuteAction(string urlTbText, string dbName, string selectedFolderText, string fileName, ActionList action)
         {
-            if (string.IsNullOrEmpty(urlTbText) || string.IsNullOrEmpty(dbName) || string.IsNullOrEmpty(fileName))
-            {
-                throw new Exception("Fields DB, URL and FileName is Required!");
-            }
-
-            if (string.IsNullOrEmpty(selectedFolderText))
-            {
-                throw new Exception("Please, select folder.");
-            }
-
-            
+            Check(urlTbText, dbName, selectedFolderText, fileName, action);
             ExecuteBtn.IsEnabled = false;
             CheckBtn.IsEnabled = false;
             GetLastBtn.IsEnabled = false;
@@ -248,27 +234,29 @@ namespace RemoteBackUpClient
             {
                 var thread = new Thread(() =>
                 {
-                    string data;
+                    string path;
                     switch (action)
                     {
                         case ActionList.CreateNewBackup:
-                            data = _requestSender.InvokeAction(urlTbText, dbName, action);
+                            path = Path.Combine(selectedFolderText, fileName);
+                            _requestSender.InvokeAction(urlTbText, dbName, path, action);
                             break;
                         case ActionList.CheckExistFile:
-                            data = _requestSender.InvokeAction(urlTbText, dbName, action);
+                            _requestSender.InvokeAction(urlTbText, dbName, null, action);
                             break;
                         case ActionList.GetLastBackUp:
-                            data = _requestSender.InvokeAction(urlTbText, dbName, action);
+                            path = Path.Combine(selectedFolderText, fileName);
+                            _requestSender.InvokeAction(urlTbText, dbName, path, action);
                             break;
                         default:
                             throw new ArgumentOutOfRangeException(nameof(action), action, null);
                     }
 
-                    if (data != null)
-                    {
-                        FileUtils.SaveFile(data, selectedFolderText, fileName);
-                        AddTextToConsole("Saved to " + selectedFolderText);
-                    }
+                    //if (data != null)
+                    //{
+                    //    FileUtils.SaveFile(data, selectedFolderText, fileName);
+                    //    AddTextToConsole("Saved to " + selectedFolderText);
+                    //}
 
                     ExecuteBtn?.Dispatcher?.Invoke(() => { ExecuteBtn.IsEnabled = true; });
                     CheckBtn?.Dispatcher?.Invoke(() => { CheckBtn.IsEnabled = true; });
@@ -277,6 +265,46 @@ namespace RemoteBackUpClient
                 });
                 thread.Start();
             }
+        }
+
+        private static void Check(string urlTbText, string dbName, string selectedFolderText, string fileName, ActionList action)
+        {
+
+            switch (action)
+            {
+                case ActionList.CreateNewBackup:
+                    if (string.IsNullOrEmpty(urlTbText) || string.IsNullOrEmpty(dbName) || string.IsNullOrEmpty(fileName))
+                    {
+                        throw new Exception("Fields DB, URL and FileName is Required!");
+                    }
+
+                    if (string.IsNullOrEmpty(selectedFolderText))
+                    {
+                        throw new Exception("Please, select folder.");
+                    }
+                    break;
+                case ActionList.CheckExistFile:
+                    if (string.IsNullOrEmpty(urlTbText) || string.IsNullOrEmpty(dbName) || string.IsNullOrEmpty(fileName))
+                    {
+                        throw new Exception("Fields DB, URL and FileName is Required!");
+                    }
+                    break;
+                case ActionList.GetLastBackUp:
+                    if (string.IsNullOrEmpty(urlTbText) || string.IsNullOrEmpty(dbName) || string.IsNullOrEmpty(fileName))
+                    {
+                        throw new Exception("Fields DB, URL and FileName is Required!");
+                    }
+
+                    if (string.IsNullOrEmpty(selectedFolderText))
+                    {
+                        throw new Exception("Please, select folder.");
+                    }
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(action), action, null);
+            }
+
+
         }
 
         private void SelectFolder_OnClick(object sender, RoutedEventArgs e)
@@ -294,6 +322,8 @@ namespace RemoteBackUpClient
             if (showDialog != null && showDialog == true)
             {
                 SelectedFolder.Text = dialog.SelectedPath;
+                _settings.DefaultPath = SelectedFolder.Text;
+                SettingsReader.Save(_settings);
             }
         }
 
@@ -327,11 +357,6 @@ namespace RemoteBackUpClient
             var selectedFolderText = SelectedFolder.Text;
             string fileName = FileNameTb.Text;
             var dbName = DbList.SelectedItem?.ToString();
-            if (string.IsNullOrEmpty(fileName))
-            {
-                fileName = dbName + ".7z";
-            }
-
             try
             {
                 ExecuteAction(urlTbText, dbName, selectedFolderText, fileName, ActionList.GetLastBackUp);
@@ -353,10 +378,6 @@ namespace RemoteBackUpClient
             var selectedFolderText = SelectedFolder.Text;
             string fileName = FileNameTb.Text;
             var dbName = DbList.SelectedItem?.ToString();
-            if (string.IsNullOrEmpty(fileName))
-            {
-                fileName = dbName + ".7z";
-            }
 
             try
             {

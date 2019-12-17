@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
@@ -18,6 +19,7 @@ namespace RequestProcessorLib.Util
         private readonly Dictionary<string, string> _customHeaders;
         private string Token { get; set; }
         private const string AuthUrl = "/mvc/Public/auth/Logon";
+        private const string DownloadCompleted = "Download completed";
 
         public RequestManager(Dictionary<string, string> customHeaders = null)
         {
@@ -49,6 +51,52 @@ namespace RequestProcessorLib.Util
             return await ConstructAndMakeRequest(url, HttpMethod.Get, null);
         }
 
+        public async Task<string> GetFile(string url, string destination)
+        {
+            using (var client = new HttpClient())
+            {
+                if (!string.IsNullOrEmpty(Token))
+                {
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Token);
+                }
+
+                client.Timeout = TimeSpan.FromMinutes(60);
+                HttpResponseMessage response;
+                try
+                {
+                    response = await client.GetAsync(url);
+                }
+                catch (Exception e)
+                {
+                    ShowMessage?.Invoke(e.Message);
+                    return null;
+                }
+                if (response.IsSuccessStatusCode)
+                {
+                    //var contentStream = await content.ReadAsStreamAsync(); // get the actual content stream
+
+                    var fi = new FileInfo(destination);
+                    if (string.IsNullOrEmpty(fi.Extension))
+                    {
+                        destination += ".7z";
+                    }
+
+                    using (FileStream fileStream = new FileStream(destination, FileMode.Create, FileAccess.Write, FileShare.None))
+                    {
+                        await response.Content.CopyToAsync(fileStream);
+                        return DownloadCompleted;
+                    }
+                }
+                else
+                {
+                    ShowMessage?.Invoke(response.ReasonPhrase);
+
+                }
+            }
+
+            return null;
+        }
+
         /// <summary>
         /// Build up our request
         /// </summary>
@@ -74,6 +122,8 @@ namespace RequestProcessorLib.Util
                 {
                     client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Token);
                 }
+
+                client.Timeout = TimeSpan.FromMinutes(60);
 
                 // POST method
                 if (method == HttpMethod.Post)
@@ -137,6 +187,10 @@ namespace RequestProcessorLib.Util
 
         public void GetToken(string s)
         {
+            if (!string.IsNullOrEmpty(Token))
+            {
+                return;
+            }
             var url = s.AppendPathSegment(AuthUrl);
 
             dynamic json = new JObject();
