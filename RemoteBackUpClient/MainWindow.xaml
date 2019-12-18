@@ -9,7 +9,6 @@
         Icon="Images/cat.png"
         StateChanged="MainWindow_OnStateChanged" Width="450" Height="300"
         WindowStartupLocation="CenterScreen">
-
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />

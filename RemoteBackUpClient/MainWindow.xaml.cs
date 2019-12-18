@@ -13,7 +13,6 @@ using RemoteBackUpClient.Data;
 using RemoteBackUpClient.Utils;
 using RequestProcessorLib.Classes;
 using RequestProcessorLib.Interfaces;
-using RequestProcessorLib.Util;
 
 
 namespace RemoteBackUpClient
@@ -38,8 +37,6 @@ namespace RemoteBackUpClient
         event Action<string> ShowMessage;
         private event Action<string> ShowBalloonMsg;
         private CloseReason _closeReason;
-
-
 
         public MainWindow()
         {
