@@ -52,12 +52,16 @@ namespace RemoteBackUpClient
 
         private void Init()
         {
-            _notificationManager = new NotificationManager();
-            CreateTaskBarIcon();
-            ShowMessage += AddTextToConsole;
-            ShowBalloonMsg += ShowBalloonTip;
+            if (_tbi == null)
+            {
+                _notificationManager = new NotificationManager();
+                CreateTaskBarIcon();
+                ShowMessage += AddTextToConsole;
+                ShowBalloonMsg += ShowBalloonTip;
+            }
 
             try
+
             {
                 _settings = SettingsReader.GetSettings();
 
@@ -341,6 +345,7 @@ namespace RemoteBackUpClient
                 Console.Text += msg;
                 Console.Text += Environment.NewLine;
             });
+            ScrollViewer?.Dispatcher?.Invoke(() => ScrollViewer.ScrollToEnd());
         }
 
         /// <summary>

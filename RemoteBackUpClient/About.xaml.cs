@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Windows;
 using System.Windows.Navigation;
+using RemoteBackUpClient.AboutDataProviders;
 
 namespace RemoteBackUpClient
 {
@@ -12,6 +13,7 @@ namespace RemoteBackUpClient
         public About()
         {
             InitializeComponent();
+            DataContext = new AboutAssemblyDataProvider();
         }
 
         private void hyperlink_RequestNavigate(object sender, RequestNavigateEventArgs e)

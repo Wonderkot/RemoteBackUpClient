@@ -13,9 +13,8 @@
                 <ApplicationInfo xmlns="">
                     <Title>About</Title> 
                     <Product>Remote Backup Client</Product>
-                    <Copyright>Copyright © 2019 </Copyright>
+                    <Copyright>Copyright © 2020 </Copyright>
                     <Description/>
-                    <Version>1.0.0.0</Version>
                     <Link Uri="https://github.com/Wonderkot/RemoteBackUpClient">GitHub</Link>
                 </ApplicationInfo>
             </x:XData>

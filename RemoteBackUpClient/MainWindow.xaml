@@ -94,7 +94,7 @@
         <Button Name="ExecuteBtn" Grid.Column="1" Grid.Row="5" Click="ExecuteBtn_OnClick" HorizontalAlignment="Right"  Width="100" Margin="0,0,5,5">Get New</Button>
         <Button Name="ClearBtn" Grid.Column="0" Grid.Row="5" Click="ClearBtn_OnClick" HorizontalAlignment="Left" Width="50" Margin="5,0,5,5" >Clear</Button>
         <!-- Console-->
-        <ScrollViewer Grid.Column="0" Grid.Row="6" Grid.ColumnSpan="2">
+        <ScrollViewer Grid.Column="0" Grid.Row="6" Grid.ColumnSpan="2" Name="ScrollViewer">
             <TextBlock  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Name="Console" TextWrapping="WrapWithOverflow"/>
         </ScrollViewer>
 

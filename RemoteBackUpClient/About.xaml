@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="About" Height="150" Width="250" WindowStartupLocation="CenterScreen">
+        Title="About" Height="200" Width="250" WindowStartupLocation="CenterScreen">
     <Window.Resources>
 
 
@@ -46,15 +46,15 @@
     <StackPanel x:Uid="clientArea" Style="{StaticResource BackgroundStyle}">
         <!--<StaticResource ResourceKey="aboutLogo" />-->
 
-        <StackPanel x:Uid="displayArea" Style="{StaticResource DisplayAreaStyle}" DataContext="{StaticResource AboutProvider}">
-            <Label x:Name="ProductName" x:Uid="productName" Content="{Binding Mode=OneTime, XPath=Product}" />
+        <StackPanel x:Uid="displayArea" Style="{StaticResource DisplayAreaStyle}">
+            <Label x:Name="ProductName" x:Uid="productName" Content="{Binding Mode=OneTime, Path=Product}" />
             <StackPanel x:Uid="versionArea" Orientation="Horizontal">
                 <Label x:Name="VersionLabel" x:Uid="VersionLabel" Content="Version - " />
-                <Label x:Name="Version" x:Uid="version" Content="{Binding Mode=OneTime, XPath=Version}" />
+                <Label x:Name="Version" x:Uid="version" Content="{Binding Mode=OneTime, Path=Version}" />
             </StackPanel>
 
-            <Label x:Name="Copyright" x:Uid="copyright" Content="{Binding Mode=OneTime, XPath=Copyright}"  />
-            <Label x:Name="Company" x:Uid="company" Content="{Binding Mode=OneTime, XPath=Company}" />
+            <Label x:Name="Copyright" x:Uid="copyright" Content="{Binding Mode=OneTime, Path=Copyright}"  />
+            <Label x:Name="Company" x:Uid="company" Content="{Binding Mode=OneTime, Path=Company}" />
             <Label x:Name="Reserved" x:Uid="reserved" Content="All Rights Reserved." />
 
 
@@ -63,9 +63,9 @@
 
                 <Button x:Name="OkButton" x:Uid="okButton" Style="{StaticResource OkButtonStyle}" Content="OK" />
                 <Label x:Name="ProductLink" x:Uid="productLink" Style="{StaticResource LinkLabelStyle}" >
-                    <Hyperlink x:Name="Hyperlink" x:Uid="hyperlink" NavigateUri="{Binding Mode=OneTime, XPath=Link/@Uri}"  Style="{StaticResource LinkLabelStyle}"
+                    <Hyperlink x:Name="Hyperlink" x:Uid="hyperlink" NavigateUri="{Binding Mode=OneTime, Path=LinkUri}"  Style="{StaticResource LinkLabelStyle}"
                                RequestNavigate="hyperlink_RequestNavigate">
-                        <TextBlock Text="{Binding Mode=OneTime, XPath=Link}" />
+                        <TextBlock Text="{Binding Mode=OneTime, Path=LinkText}" />
                     </Hyperlink>
                 </Label>
             </DockPanel>

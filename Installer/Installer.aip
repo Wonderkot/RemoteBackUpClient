@@ -10,10 +10,10 @@
     <ROW Property="ARPCOMMENTS" Value="This installer database contains the logic and data required to install [|ProductName]." ValueLocId="*"/>
     <ROW Property="ARPPRODUCTICON" Value="cat.exe" Type="8"/>
     <ROW Property="Manufacturer" Value="YobaSoft"/>
-    <ROW Property="ProductCode" Value="1033:{156511A5-3F4A-41A4-9510-B6572708AC50} " Type="16"/>
+    <ROW Property="ProductCode" Value="1033:{B0BAA5FC-083D-43DA-915E-CB9741A83BB4} " Type="16"/>
     <ROW Property="ProductLanguage" Value="1033"/>
     <ROW Property="ProductName" Value="RemoteClient"/>
-    <ROW Property="ProductVersion" Value="1.0.0" Type="32"/>
+    <ROW Property="ProductVersion" Value="1.0.0.2" Type="32"/>
     <ROW Property="SecureCustomProperties" Value="OLDPRODUCTS;AI_NEWERPRODUCTFOUND"/>
     <ROW Property="UpgradeCode" Value="{BA54BAF6-7DEF-4237-8E92-7C83C2E225BE}"/>
     <ROW Property="WindowsType9X" MultiBuildValue="DefaultBuild:Windows 9x/ME" ValueLocId="-"/>
