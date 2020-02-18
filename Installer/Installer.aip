@@ -13,7 +13,7 @@
     <ROW Property="ProductCode" Value="1033:{B0BAA5FC-083D-43DA-915E-CB9741A83BB4} " Type="16"/>
     <ROW Property="ProductLanguage" Value="1033"/>
     <ROW Property="ProductName" Value="RemoteClient"/>
-    <ROW Property="ProductVersion" Value="1.0.0.2" Type="32"/>
+    <ROW Property="ProductVersion" Value="1.0.0.3" Type="32"/>
     <ROW Property="SecureCustomProperties" Value="OLDPRODUCTS;AI_NEWERPRODUCTFOUND"/>
     <ROW Property="UpgradeCode" Value="{BA54BAF6-7DEF-4237-8E92-7C83C2E225BE}"/>
     <ROW Property="WindowsType9X" MultiBuildValue="DefaultBuild:Windows 9x/ME" ValueLocId="-"/>

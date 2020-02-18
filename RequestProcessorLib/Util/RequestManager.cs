@@ -64,7 +64,7 @@ namespace RequestProcessorLib.Util
                 HttpResponseMessage response;
                 try
                 {
-                    response = await client.GetAsync(url);
+                    response = await client.GetAsync(url, HttpCompletionOption.ResponseHeadersRead);
                 }
                 catch (Exception e)
                 {
@@ -192,6 +192,7 @@ namespace RequestProcessorLib.Util
                 return;
             }
             var url = s.AppendPathSegment(AuthUrl);
+            ShowMessage?.Invoke($"Send request to {url} for token...");
 
             dynamic json = new JObject();
             json.username = Login;
