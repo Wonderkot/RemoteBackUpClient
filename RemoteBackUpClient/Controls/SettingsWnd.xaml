@@ -24,6 +24,7 @@
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Db Name" Binding="{Binding DbName, TargetNullValue=(Enter db name)}"></DataGridTextColumn>
                 <DataGridTextColumn Header="Url" Binding="{Binding Url, TargetNullValue=(Enter url)}"></DataGridTextColumn>
+                <DataGridCheckBoxColumn Header="Schedule" Binding="{Binding UseSchedule}"></DataGridCheckBoxColumn>
             </DataGrid.Columns>
         </DataGrid>
                               

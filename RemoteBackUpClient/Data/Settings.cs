@@ -15,5 +15,6 @@ namespace RemoteBackUpClient.Data
     {
         public string DbName { get; set; }
         public string Url { get; set; }
+        public bool UseSchedule { get; set; } = true;
     }
 }

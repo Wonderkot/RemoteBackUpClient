@@ -42,6 +42,7 @@
     <ROW Component="Notifications.Wpf.dll" ComponentId="{6596D1DC-F000-40A1-A27B-019B7BA63FC0}" Directory_="APPDIR" Attributes="0" KeyPath="Notifications.Wpf.dll"/>
     <ROW Component="Ookii.Dialogs.Wpf.dll" ComponentId="{E6F95090-32C2-49FF-86F9-8E44A551AB7D}" Directory_="APPDIR" Attributes="0" KeyPath="Ookii.Dialogs.Wpf.dll"/>
     <ROW Component="ProductInformation" ComponentId="{ED9041F8-681E-4414-8661-FBD49365A427}" Directory_="APPDIR" Attributes="4" KeyPath="Version"/>
+    <ROW Component="Quartz.dll" ComponentId="{2F0654A5-397B-4575-920B-CDA3EC751E5E}" Directory_="APPDIR" Attributes="0" KeyPath="Quartz.dll"/>
     <ROW Component="RemoteBackUpClient.exe" ComponentId="{AAF695F9-283B-4215-B5BB-835389CDB907}" Directory_="APPDIR" Attributes="0" KeyPath="RemoteBackUpClient.exe"/>
     <ROW Component="RemoteBackUpClient.exe.config" ComponentId="{65677EEA-5572-4300-BE27-C633CA568843}" Directory_="APPDIR" Attributes="0" KeyPath="RemoteBackUpClient.exe.config" Type="0"/>
     <ROW Component="RemoteBacup" ComponentId="{62D4EA3C-BC0B-4626-AD7B-1F9FECE8861E}" Directory_="RemoteBacup_Dir" Attributes="0"/>
@@ -71,6 +72,8 @@
     <ROW File="RequestProcessorLib.dll" Component_="RequestProcessorLib.dll" FileName="REQUES~1.DLL|RequestProcessorLib.dll" Attributes="0" SourcePath="..\RemoteBackUpClient\bin\Release\RequestProcessorLib.dll" SelfReg="false"/>
     <ROW File="System.Net.Http.Formatting.dll" Component_="System.Net.Http.Formatting.dll" FileName="SYSTEM~1.DLL|System.Net.Http.Formatting.dll" Attributes="0" SourcePath="..\RemoteBackUpClient\bin\Release\System.Net.Http.Formatting.dll" SelfReg="false"/>
     <ROW File="Settings.json" Component_="RemoteBackUpClient.exe.config" FileName="SETTIN~1.JSO|Settings.json" Attributes="0" SourcePath="..\RemoteBackUpClient\bin\Release\Settings.json" SelfReg="false"/>
+    <ROW File="Quartz.dll" Component_="Quartz.dll" FileName="Quartz.dll" Attributes="0" SourcePath="..\RemoteBackUpClient\bin\Release\Quartz.dll" SelfReg="false"/>
+    <ROW File="Quartz.xml" Component_="RemoteBackUpClient.exe.config" FileName="Quartz.xml" Attributes="0" SourcePath="..\RemoteBackUpClient\bin\Release\Quartz.xml" SelfReg="false"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.BootstrOptComponent">
     <ROW BootstrOptKey="GlobalOptions" DownloadFolder="[AppDataFolder][|Manufacturer]\[|ProductName]\prerequisites" Options="2"/>
@@ -166,6 +169,7 @@
     <ROW Feature_="MainFeature" Component_="System.Net.Http.Formatting.dll"/>
     <ROW Feature_="MainFeature" Component_="SHORTCUTDIR"/>
     <ROW Feature_="MainFeature" Component_="RemoteBacup"/>
+    <ROW Feature_="MainFeature" Component_="Quartz.dll"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.MsiIconsComponent">
     <ROW Name="SystemFoldermsiexec.exe" SourcePath="&lt;AI_RES&gt;uninstall.ico" Index="0"/>
@@ -204,7 +208,6 @@
     <ROW Shortcut="RemoteBackUpClient_2" Directory_="DesktopFolder" Name="REMOTE~1|RemoteBackUpClient" Component_="RemoteBackUpClient.exe" Target="[#RemoteBackUpClient.exe]" Hotkey="0" Icon_="cat.exe" IconIndex="0" ShowCmd="1" WkDir="APPDIR" CustomFlags="1"/>
     <ROW Shortcut="RemoteBackUpClient_3" Directory_="RemoteBacup_Dir" Name="REMOTE~1|RemoteBackUpClient" Component_="RemoteBackUpClient.exe" Target="[#RemoteBackUpClient.exe]" Hotkey="0" Icon_="cat.exe" IconIndex="0" ShowCmd="1" WkDir="APPDIR" CustomFlags="1"/>
     <ROW Shortcut="UninstallProductNameProductVersio_1" Directory_="APPDIR" Name="UNINST~1.0|Uninstall [|ProductName] [|ProductVersion]" Component_="ProductInformation" Target="[SystemFolder]msiexec.exe" Arguments="/x [ProductCode]" Hotkey="0" Icon_="SystemFoldermsiexec.exe" IconIndex="0" ShowCmd="1"/>
-    <ROW Shortcut="UninstallProductNameProductVersio_2" Directory_="RemoteBacup_Dir" Name="UNINST~1.0|Uninstall [|ProductName] [|ProductVersion]" Component_="System.Net.Http.Formatting.dll" Target="[SystemFolder]msiexec.exe" Arguments="/x [ProductCode]" Hotkey="0" Icon_="SystemFoldermsiexec.exe" IconIndex="0" ShowCmd="1"/>
     <ROW Shortcut="UninstallProductNameProductVersion" Directory_="SHORTCUTDIR" Name="UNINST~1.0|Uninstall [|ProductName] [|ProductVersion]" Component_="ProductInformation" Target="[SystemFolder]msiexec.exe" Arguments="/x [ProductCode]" Hotkey="0" Icon_="SystemFoldermsiexec.exe" IconIndex="0" ShowCmd="1"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.MsiThemeComponent">

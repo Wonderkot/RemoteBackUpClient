@@ -135,6 +135,7 @@ namespace RequestProcessorLib.Util
                     try
                     {
                         response = await client.PostAsync(url, content);
+                        ShowMessage?.Invoke("Wait for Response");
                     }
                     catch (Exception e)
                     {

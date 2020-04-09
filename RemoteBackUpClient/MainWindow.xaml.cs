@@ -10,6 +10,7 @@ using Notifications.Wpf;
 using Ookii.Dialogs.Wpf;
 using RemoteBackUpClient.Controls;
 using RemoteBackUpClient.Data;
+using RemoteBackUpClient.Jobs;
 using RemoteBackUpClient.Utils;
 using RequestProcessorLib.Classes;
 using RequestProcessorLib.Interfaces;
@@ -43,6 +44,8 @@ namespace RemoteBackUpClient
             InitializeComponent();
             Init();
             Closed += OnClosed;
+
+            BackupScheduler.Start();
         }
 
         private void OnClosed(object sender, EventArgs e)
@@ -414,7 +417,7 @@ namespace RemoteBackUpClient
 
         public void ShowBalloonTip(string msg)
         {
-            _tbi.ShowBalloonTip("Remote Backup", msg, BalloonIcon.Info);
+            //_tbi.ShowBalloonTip("Remote Backup", msg, BalloonIcon.Info);
             //also show notification
             _notificationManager.Show(new NotificationContent()
             {
