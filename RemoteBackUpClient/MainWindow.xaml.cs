@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Interop;
@@ -42,7 +43,9 @@ namespace RemoteBackUpClient
         public MainWindow()
         {
             InitializeComponent();
+            Logger.InitLogger();
             Init();
+            _requestSender.Log = Logger.Log;
             Closed += OnClosed;
 
             BackupScheduler.Start();
@@ -55,6 +58,7 @@ namespace RemoteBackUpClient
 
         private void Init()
         {
+            Logger.Log.Info("--- Инициализация ---");
             if (_tbi == null)
             {
                 _notificationManager = new NotificationManager();
@@ -70,6 +74,7 @@ namespace RemoteBackUpClient
 
                 if (string.IsNullOrEmpty(_settings.Password))
                 {
+                    Logger.Log.Error("Пустой пароль в настройках!");
                     MessageBox.Show("Password is empty!", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
                     return;
                 }
@@ -81,6 +86,7 @@ namespace RemoteBackUpClient
             catch (Exception e)
             {
                 AddTextToConsole(e.Message);
+                Logger.Log.ErrorFormat("Ошибка чтения настроек. {0}", e.InnerException);
             }
             if (_settings != null)
             {
@@ -125,6 +131,7 @@ namespace RemoteBackUpClient
                         throw new ArgumentOutOfRangeException();
                 }
             };
+            Logger.Log.Info("--- Конец инициализации ---");
         }
 
         private IntPtr WindowProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
@@ -189,6 +196,7 @@ namespace RemoteBackUpClient
             _settings.SelectedDb = DbList.SelectionBoxItem.ToString();
             _settings.DefaultPath = SelectedFolder.Text;
             SettingsReader.Save(_settings);
+            Logger.Log.Info("--- Настройки обновлены ---");
         }
 
         private void MainWindow_OnStateChanged(object sender, EventArgs e)
@@ -233,6 +241,9 @@ namespace RemoteBackUpClient
             CheckBtn.IsEnabled = false;
             GetLastBtn.IsEnabled = false;
             ClearBtn.IsEnabled = false;
+            GetAllBtn.IsEnabled = false;
+
+            Logger.Log.InfoFormat("--- Выполняется операция {0} ---", action);
 
             if (!string.IsNullOrEmpty(urlTbText) && !string.IsNullOrEmpty(dbName))
             {
@@ -266,6 +277,7 @@ namespace RemoteBackUpClient
                     CheckBtn?.Dispatcher?.Invoke(() => { CheckBtn.IsEnabled = true; });
                     GetLastBtn?.Dispatcher?.Invoke(() => { GetLastBtn.IsEnabled = true; });
                     ClearBtn?.Dispatcher?.Invoke(() => { ClearBtn.IsEnabled = true; });
+                    GetAllBtn?.Dispatcher?.Invoke(() => { GetAllBtn.IsEnabled = true; });
                 });
                 thread.Start();
             }
@@ -313,9 +325,11 @@ namespace RemoteBackUpClient
 
         private void SelectFolder_OnClick(object sender, RoutedEventArgs e)
         {
-            VistaFolderBrowserDialog dialog = new VistaFolderBrowserDialog();
-            dialog.Description = "Please select a folder.";
-            dialog.UseDescriptionForTitle = true; // This applies to the Vista style dialog only, not the old dialog.
+            VistaFolderBrowserDialog dialog = new VistaFolderBrowserDialog
+            {
+                Description = @"Please select a folder.", UseDescriptionForTitle = true
+            };
+            // This applies to the Vista style dialog only, not the old dialog.
             if (!VistaFolderBrowserDialog.IsVistaFolderDialogSupported)
             {
                 MessageBox.Show(this, "Because you are not using Windows Vista or later, the regular folder browser dialog will be used. Please use Windows Vista to see the new dialog.", "Sample folder browser dialog");
@@ -349,6 +363,7 @@ namespace RemoteBackUpClient
                 Console.Text += Environment.NewLine;
             });
             ScrollViewer?.Dispatcher?.Invoke(() => ScrollViewer.ScrollToEnd());
+            Logger.Log.InfoFormat("Console: {0}", msg);
         }
 
         /// <summary>
@@ -447,6 +462,23 @@ namespace RemoteBackUpClient
         {
             About about = new About();
             about.ShowDialog();
+        }
+
+        private void GetAllBtn_OnClick(object sender, RoutedEventArgs e)
+        {
+            Parallel.ForEach(_settings.List, listItem =>
+            {
+                if (!listItem.UseSchedule) return;
+                var path = Path.Combine(_settings.DefaultPath, listItem.DbName);
+                try
+                {
+                    _requestSender.InvokeAction(listItem.Url, listItem.DbName, path, ActionList.CreateNewBackup);
+                }
+                catch (Exception exception)
+                {
+                    AddTextToConsole(exception.Message);
+                }
+            });
         }
     }
 }

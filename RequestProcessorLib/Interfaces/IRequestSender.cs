@@ -1,4 +1,5 @@
 ﻿using System;
+using log4net;
 using RequestProcessorLib.Classes;
 
 namespace RequestProcessorLib.Interfaces
@@ -7,5 +8,6 @@ namespace RequestProcessorLib.Interfaces
     {
         string InvokeAction(string url, string dbName, string destination, ActionList actionList);
         void Init(Action<string> onShowMessage, Action<string> onShowBalloonMsg, string settingsLogin, string settingsPassword);
+        ILog Log { get; set; }
     }
 }

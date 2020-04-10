@@ -13,7 +13,7 @@
     <ROW Property="ProductCode" Value="1033:{B0BAA5FC-083D-43DA-915E-CB9741A83BB4} " Type="16"/>
     <ROW Property="ProductLanguage" Value="1033"/>
     <ROW Property="ProductName" Value="RemoteClient"/>
-    <ROW Property="ProductVersion" Value="1.0.0.3" Type="32"/>
+    <ROW Property="ProductVersion" Value="1.0.0.4" Type="32"/>
     <ROW Property="SecureCustomProperties" Value="OLDPRODUCTS;AI_NEWERPRODUCTFOUND"/>
     <ROW Property="UpgradeCode" Value="{BA54BAF6-7DEF-4237-8E92-7C83C2E225BE}"/>
     <ROW Property="WindowsType9X" MultiBuildValue="DefaultBuild:Windows 9x/ME" ValueLocId="-"/>
@@ -27,53 +27,57 @@
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.MsiDirsComponent">
     <ROW Directory="APPDIR" Directory_Parent="TARGETDIR" DefaultDir="APPDIR:." IsPseudoRoot="1"/>
-    <ROW Directory="DesktopFolder" Directory_Parent="TARGETDIR" DefaultDir="DESKTO~1|DesktopFolder" IsPseudoRoot="1"/>
     <ROW Directory="RemoteBacup_Dir" Directory_Parent="StartMenuFolder" DefaultDir="REMOTE~2|Remote Backup"/>
     <ROW Directory="SHORTCUTDIR" Directory_Parent="TARGETDIR" DefaultDir="SHORTC~1|SHORTCUTDIR" IsPseudoRoot="1"/>
     <ROW Directory="StartMenuFolder" Directory_Parent="TARGETDIR" DefaultDir="STARTM~1|StartMenuFolder" IsPseudoRoot="1"/>
     <ROW Directory="TARGETDIR" DefaultDir="SourceDir"/>
+    <ROW Directory="lib_Dir" Directory_Parent="APPDIR" DefaultDir="lib"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.MsiCompsComponent">
     <ROW Component="APPDIR" ComponentId="{3D2032E6-D30C-4E57-95D4-35B89B71935B}" Directory_="APPDIR" Attributes="0"/>
-    <ROW Component="Flurl.Http.dll" ComponentId="{0ED8006C-863F-4991-A62C-2DF46D108C07}" Directory_="APPDIR" Attributes="0" KeyPath="Flurl.Http.dll"/>
-    <ROW Component="Flurl.dll" ComponentId="{D305E66E-4730-408F-B12A-2524EF4459E7}" Directory_="APPDIR" Attributes="0" KeyPath="Flurl.dll"/>
-    <ROW Component="Hardcodet.Wpf.TaskbarNotification.dll" ComponentId="{D09C2FBF-8B68-4CF1-A874-B7D3F232EE26}" Directory_="APPDIR" Attributes="0" KeyPath="Hardcodet.Wpf.TaskbarNotification.dll"/>
-    <ROW Component="Newtonsoft.Json.dll" ComponentId="{E0C0DD3D-E670-4943-9CFD-B86F8A5653E1}" Directory_="APPDIR" Attributes="0" KeyPath="Newtonsoft.Json.dll"/>
-    <ROW Component="Notifications.Wpf.dll" ComponentId="{6596D1DC-F000-40A1-A27B-019B7BA63FC0}" Directory_="APPDIR" Attributes="0" KeyPath="Notifications.Wpf.dll"/>
-    <ROW Component="Ookii.Dialogs.Wpf.dll" ComponentId="{E6F95090-32C2-49FF-86F9-8E44A551AB7D}" Directory_="APPDIR" Attributes="0" KeyPath="Ookii.Dialogs.Wpf.dll"/>
+    <ROW Component="Flurl.dll" ComponentId="{C821D1F7-8F49-402B-A82F-0AF68E994A09}" Directory_="lib_Dir" Attributes="0" KeyPath="Flurl.dll"/>
+    <ROW Component="Flurl.xml" ComponentId="{64CE17FE-A5E2-4A35-9AC0-8F8EBA672DC4}" Directory_="lib_Dir" Attributes="0" KeyPath="Flurl.xml" Type="0"/>
+    <ROW Component="Hardcodet.Wpf.TaskbarNotification.dll" ComponentId="{2519E841-AFCC-4560-B155-BE1289197989}" Directory_="lib_Dir" Attributes="0" KeyPath="Hardcodet.Wpf.TaskbarNotification.dll"/>
+    <ROW Component="Newtonsoft.Json.dll" ComponentId="{E69E232B-E4F9-4D4B-881D-6F18F74E4F3B}" Directory_="lib_Dir" Attributes="0" KeyPath="Newtonsoft.Json.dll"/>
+    <ROW Component="Notifications.Wpf.dll" ComponentId="{E351C8E6-8491-4059-9ABE-F01938A5568F}" Directory_="lib_Dir" Attributes="0" KeyPath="Notifications.Wpf.dll"/>
+    <ROW Component="Ookii.Dialogs.Wpf.dll" ComponentId="{1973DC12-8CFC-4ED8-9081-F34A757DE382}" Directory_="lib_Dir" Attributes="0" KeyPath="Ookii.Dialogs.Wpf.dll"/>
     <ROW Component="ProductInformation" ComponentId="{ED9041F8-681E-4414-8661-FBD49365A427}" Directory_="APPDIR" Attributes="4" KeyPath="Version"/>
-    <ROW Component="Quartz.dll" ComponentId="{2F0654A5-397B-4575-920B-CDA3EC751E5E}" Directory_="APPDIR" Attributes="0" KeyPath="Quartz.dll"/>
-    <ROW Component="RemoteBackUpClient.exe" ComponentId="{AAF695F9-283B-4215-B5BB-835389CDB907}" Directory_="APPDIR" Attributes="0" KeyPath="RemoteBackUpClient.exe"/>
-    <ROW Component="RemoteBackUpClient.exe.config" ComponentId="{65677EEA-5572-4300-BE27-C633CA568843}" Directory_="APPDIR" Attributes="0" KeyPath="RemoteBackUpClient.exe.config" Type="0"/>
+    <ROW Component="Quartz.dll" ComponentId="{EB14BE90-AAE0-4818-91A6-244404D242FF}" Directory_="lib_Dir" Attributes="0" KeyPath="Quartz.dll"/>
+    <ROW Component="RemoteBackUpClient.exe" ComponentId="{302F27B1-D62C-4BA3-B25E-9A228AC361BA}" Directory_="APPDIR" Attributes="0" KeyPath="RemoteBackUpClient.exe"/>
+    <ROW Component="RemoteBackUpClient.exe.config" ComponentId="{F98175E8-46E0-496A-B496-C3EA4E1744EA}" Directory_="APPDIR" Attributes="0" KeyPath="RemoteBackUpClient.exe.config" Type="0"/>
     <ROW Component="RemoteBacup" ComponentId="{62D4EA3C-BC0B-4626-AD7B-1F9FECE8861E}" Directory_="RemoteBacup_Dir" Attributes="0"/>
-    <ROW Component="RequestProcessorLib.dll" ComponentId="{38326593-6442-4A45-8672-3A6496701620}" Directory_="APPDIR" Attributes="0" KeyPath="RequestProcessorLib.dll"/>
+    <ROW Component="RequestProcessorLib.dll" ComponentId="{083476B8-2920-444E-8B87-5BDCBE176F83}" Directory_="lib_Dir" Attributes="0" KeyPath="RequestProcessorLib.dll"/>
     <ROW Component="SHORTCUTDIR" ComponentId="{8F471FE9-17EE-4BB8-BB5C-DEBD05CC6E3D}" Directory_="SHORTCUTDIR" Attributes="0"/>
-    <ROW Component="System.Net.Http.Formatting.dll" ComponentId="{E2F8CA30-5A9B-466F-B515-D6C5B1E2A30A}" Directory_="APPDIR" Attributes="0" KeyPath="System.Net.Http.Formatting.dll"/>
+    <ROW Component="System.Net.Http.Formatting.dll" ComponentId="{4F1ACDDD-BA8D-4134-ACCF-EE4209FA043C}" Directory_="lib_Dir" Attributes="0" KeyPath="System.Net.Http.Formatting.dll"/>
+    <ROW Component="log4net.dll" ComponentId="{A0D10DED-6942-4495-B124-D33B894F612F}" Directory_="lib_Dir" Attributes="0" KeyPath="log4net.dll"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.MsiFeatsComponent">
     <ROW Feature="MainFeature" Title="MainFeature" Description="Description" Display="1" Level="1" Directory_="APPDIR" Attributes="0"/>
     <ATTRIBUTE name="CurrentFeature" value="MainFeature"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.MsiFilesComponent">
-    <ROW File="RemoteBackUpClient.exe.config" Component_="RemoteBackUpClient.exe.config" FileName="REMOTE~1.CON|RemoteBackUpClient.exe.config" Attributes="0" SourcePath="..\RemoteBackUpClient\bin\Release\RemoteBackUpClient.exe.config" SelfReg="false"/>
-    <ROW File="Flurl.Http.xml" Component_="RemoteBackUpClient.exe.config" FileName="FLURLH~1.XML|Flurl.Http.xml" Attributes="0" SourcePath="..\RemoteBackUpClient\bin\Release\Flurl.Http.xml" SelfReg="false"/>
-    <ROW File="Flurl.xml" Component_="RemoteBackUpClient.exe.config" FileName="Flurl.xml" Attributes="0" SourcePath="..\RemoteBackUpClient\bin\Release\Flurl.xml" SelfReg="false"/>
-    <ROW File="Hardcodet.Wpf.TaskbarNotification.xml" Component_="RemoteBackUpClient.exe.config" FileName="HARDCO~1.XML|Hardcodet.Wpf.TaskbarNotification.xml" Attributes="0" SourcePath="..\RemoteBackUpClient\bin\Release\Hardcodet.Wpf.TaskbarNotification.xml" SelfReg="false"/>
-    <ROW File="Newtonsoft.Json.xml" Component_="RemoteBackUpClient.exe.config" FileName="NEWTON~1.XML|Newtonsoft.Json.xml" Attributes="0" SourcePath="..\RemoteBackUpClient\bin\Release\Newtonsoft.Json.xml" SelfReg="false"/>
-    <ROW File="Ookii.Dialogs.Wpf.xml" Component_="RemoteBackUpClient.exe.config" FileName="OOKIID~1.XML|Ookii.Dialogs.Wpf.xml" Attributes="0" SourcePath="..\RemoteBackUpClient\bin\Release\Ookii.Dialogs.Wpf.xml" SelfReg="false"/>
-    <ROW File="System.Net.Http.Formatting.xml" Component_="RemoteBackUpClient.exe.config" FileName="SYSTEM~1.XML|System.Net.Http.Formatting.xml" Attributes="0" SourcePath="..\RemoteBackUpClient\bin\Release\System.Net.Http.Formatting.xml" SelfReg="false"/>
     <ROW File="RemoteBackUpClient.exe" Component_="RemoteBackUpClient.exe" FileName="REMOTE~1.EXE|RemoteBackUpClient.exe" Attributes="0" SourcePath="..\RemoteBackUpClient\bin\Release\RemoteBackUpClient.exe" SelfReg="false" DigSign="true"/>
-    <ROW File="Flurl.dll" Component_="Flurl.dll" FileName="Flurl.dll" Attributes="0" SourcePath="..\RemoteBackUpClient\bin\Release\Flurl.dll" SelfReg="false"/>
-    <ROW File="Flurl.Http.dll" Component_="Flurl.Http.dll" FileName="FLURLH~1.DLL|Flurl.Http.dll" Attributes="0" SourcePath="..\RemoteBackUpClient\bin\Release\Flurl.Http.dll" SelfReg="false"/>
-    <ROW File="Hardcodet.Wpf.TaskbarNotification.dll" Component_="Hardcodet.Wpf.TaskbarNotification.dll" FileName="HARDCO~1.DLL|Hardcodet.Wpf.TaskbarNotification.dll" Attributes="0" SourcePath="..\RemoteBackUpClient\bin\Release\Hardcodet.Wpf.TaskbarNotification.dll" SelfReg="false"/>
-    <ROW File="Newtonsoft.Json.dll" Component_="Newtonsoft.Json.dll" FileName="NEWTON~1.DLL|Newtonsoft.Json.dll" Attributes="0" SourcePath="..\RemoteBackUpClient\bin\Release\Newtonsoft.Json.dll" SelfReg="false"/>
-    <ROW File="Notifications.Wpf.dll" Component_="Notifications.Wpf.dll" FileName="NOTIFI~1.DLL|Notifications.Wpf.dll" Attributes="0" SourcePath="..\RemoteBackUpClient\bin\Release\Notifications.Wpf.dll" SelfReg="false"/>
-    <ROW File="Ookii.Dialogs.Wpf.dll" Component_="Ookii.Dialogs.Wpf.dll" FileName="OOKIID~1.DLL|Ookii.Dialogs.Wpf.dll" Attributes="0" SourcePath="..\RemoteBackUpClient\bin\Release\Ookii.Dialogs.Wpf.dll" SelfReg="false"/>
-    <ROW File="RequestProcessorLib.dll" Component_="RequestProcessorLib.dll" FileName="REQUES~1.DLL|RequestProcessorLib.dll" Attributes="0" SourcePath="..\RemoteBackUpClient\bin\Release\RequestProcessorLib.dll" SelfReg="false"/>
-    <ROW File="System.Net.Http.Formatting.dll" Component_="System.Net.Http.Formatting.dll" FileName="SYSTEM~1.DLL|System.Net.Http.Formatting.dll" Attributes="0" SourcePath="..\RemoteBackUpClient\bin\Release\System.Net.Http.Formatting.dll" SelfReg="false"/>
+    <ROW File="RemoteBackUpClient.exe.config" Component_="RemoteBackUpClient.exe.config" FileName="REMOTE~1.CON|RemoteBackUpClient.exe.config" Attributes="0" SourcePath="..\RemoteBackUpClient\bin\Release\RemoteBackUpClient.exe.config" SelfReg="false"/>
     <ROW File="Settings.json" Component_="RemoteBackUpClient.exe.config" FileName="SETTIN~1.JSO|Settings.json" Attributes="0" SourcePath="..\RemoteBackUpClient\bin\Release\Settings.json" SelfReg="false"/>
-    <ROW File="Quartz.dll" Component_="Quartz.dll" FileName="Quartz.dll" Attributes="0" SourcePath="..\RemoteBackUpClient\bin\Release\Quartz.dll" SelfReg="false"/>
-    <ROW File="Quartz.xml" Component_="RemoteBackUpClient.exe.config" FileName="Quartz.xml" Attributes="0" SourcePath="..\RemoteBackUpClient\bin\Release\Quartz.xml" SelfReg="false"/>
+    <ROW File="Flurl.dll" Component_="Flurl.dll" FileName="Flurl.dll" Attributes="0" SourcePath="..\RemoteBackUpClient\bin\Release\lib\Flurl.dll" SelfReg="false"/>
+    <ROW File="Flurl.xml" Component_="Flurl.xml" FileName="Flurl.xml" Attributes="0" SourcePath="..\RemoteBackUpClient\bin\Release\lib\Flurl.xml" SelfReg="false"/>
+    <ROW File="Hardcodet.Wpf.TaskbarNotification.dll" Component_="Hardcodet.Wpf.TaskbarNotification.dll" FileName="HARDCO~1.DLL|Hardcodet.Wpf.TaskbarNotification.dll" Attributes="0" SourcePath="..\RemoteBackUpClient\bin\Release\lib\Hardcodet.Wpf.TaskbarNotification.dll" SelfReg="false"/>
+    <ROW File="Hardcodet.Wpf.TaskbarNotification.pdb" Component_="Hardcodet.Wpf.TaskbarNotification.dll" FileName="HARDCO~1.PDB|Hardcodet.Wpf.TaskbarNotification.pdb" Attributes="0" SourcePath="..\RemoteBackUpClient\bin\Release\lib\Hardcodet.Wpf.TaskbarNotification.pdb" SelfReg="false"/>
+    <ROW File="Hardcodet.Wpf.TaskbarNotification.xml" Component_="Flurl.xml" FileName="HARDCO~1.XML|Hardcodet.Wpf.TaskbarNotification.xml" Attributes="0" SourcePath="..\RemoteBackUpClient\bin\Release\lib\Hardcodet.Wpf.TaskbarNotification.xml" SelfReg="false"/>
+    <ROW File="log4net.dll" Component_="log4net.dll" FileName="log4net.dll" Attributes="0" SourcePath="..\RemoteBackUpClient\bin\Release\lib\log4net.dll" SelfReg="false"/>
+    <ROW File="log4net.xml" Component_="Flurl.xml" FileName="log4net.xml" Attributes="0" SourcePath="..\RemoteBackUpClient\bin\Release\lib\log4net.xml" SelfReg="false"/>
+    <ROW File="Newtonsoft.Json.dll" Component_="Newtonsoft.Json.dll" FileName="NEWTON~1.DLL|Newtonsoft.Json.dll" Attributes="0" SourcePath="..\RemoteBackUpClient\bin\Release\lib\Newtonsoft.Json.dll" SelfReg="false"/>
+    <ROW File="Newtonsoft.Json.xml" Component_="Flurl.xml" FileName="NEWTON~1.XML|Newtonsoft.Json.xml" Attributes="0" SourcePath="..\RemoteBackUpClient\bin\Release\lib\Newtonsoft.Json.xml" SelfReg="false"/>
+    <ROW File="Notifications.Wpf.dll" Component_="Notifications.Wpf.dll" FileName="NOTIFI~1.DLL|Notifications.Wpf.dll" Attributes="0" SourcePath="..\RemoteBackUpClient\bin\Release\lib\Notifications.Wpf.dll" SelfReg="false"/>
+    <ROW File="Ookii.Dialogs.Wpf.dll" Component_="Ookii.Dialogs.Wpf.dll" FileName="OOKIID~1.DLL|Ookii.Dialogs.Wpf.dll" Attributes="0" SourcePath="..\RemoteBackUpClient\bin\Release\lib\Ookii.Dialogs.Wpf.dll" SelfReg="false"/>
+    <ROW File="Ookii.Dialogs.Wpf.pdb" Component_="Ookii.Dialogs.Wpf.dll" FileName="OOKIID~1.PDB|Ookii.Dialogs.Wpf.pdb" Attributes="0" SourcePath="..\RemoteBackUpClient\bin\Release\lib\Ookii.Dialogs.Wpf.pdb" SelfReg="false"/>
+    <ROW File="Ookii.Dialogs.Wpf.xml" Component_="Flurl.xml" FileName="OOKIID~1.XML|Ookii.Dialogs.Wpf.xml" Attributes="0" SourcePath="..\RemoteBackUpClient\bin\Release\lib\Ookii.Dialogs.Wpf.xml" SelfReg="false"/>
+    <ROW File="Quartz.dll" Component_="Quartz.dll" FileName="Quartz.dll" Attributes="0" SourcePath="..\RemoteBackUpClient\bin\Release\lib\Quartz.dll" SelfReg="false"/>
+    <ROW File="Quartz.pdb" Component_="Quartz.dll" FileName="Quartz.pdb" Attributes="0" SourcePath="..\RemoteBackUpClient\bin\Release\lib\Quartz.pdb" SelfReg="false"/>
+    <ROW File="Quartz.xml" Component_="Flurl.xml" FileName="Quartz.xml" Attributes="0" SourcePath="..\RemoteBackUpClient\bin\Release\lib\Quartz.xml" SelfReg="false"/>
+    <ROW File="RequestProcessorLib.dll" Component_="RequestProcessorLib.dll" FileName="REQUES~1.DLL|RequestProcessorLib.dll" Attributes="0" SourcePath="..\RemoteBackUpClient\bin\Release\lib\RequestProcessorLib.dll" SelfReg="false"/>
+    <ROW File="System.Net.Http.Formatting.dll" Component_="System.Net.Http.Formatting.dll" FileName="SYSTEM~1.DLL|System.Net.Http.Formatting.dll" Attributes="0" SourcePath="..\RemoteBackUpClient\bin\Release\lib\System.Net.Http.Formatting.dll" SelfReg="false"/>
+    <ROW File="System.Net.Http.Formatting.xml" Component_="Flurl.xml" FileName="SYSTEM~1.XML|System.Net.Http.Formatting.xml" Attributes="0" SourcePath="..\RemoteBackUpClient\bin\Release\lib\System.Net.Http.Formatting.xml" SelfReg="false"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.BootstrOptComponent">
     <ROW BootstrOptKey="GlobalOptions" DownloadFolder="[AppDataFolder][|Manufacturer]\[|ProductName]\prerequisites" Options="2"/>
@@ -157,19 +161,20 @@
   <COMPONENT cid="caphyon.advinst.msicomp.MsiFeatCompsComponent">
     <ROW Feature_="MainFeature" Component_="APPDIR"/>
     <ROW Feature_="MainFeature" Component_="ProductInformation"/>
-    <ROW Feature_="MainFeature" Component_="RemoteBackUpClient.exe.config"/>
     <ROW Feature_="MainFeature" Component_="RemoteBackUpClient.exe"/>
+    <ROW Feature_="MainFeature" Component_="RemoteBackUpClient.exe.config"/>
     <ROW Feature_="MainFeature" Component_="Flurl.dll"/>
-    <ROW Feature_="MainFeature" Component_="Flurl.Http.dll"/>
+    <ROW Feature_="MainFeature" Component_="Flurl.xml"/>
     <ROW Feature_="MainFeature" Component_="Hardcodet.Wpf.TaskbarNotification.dll"/>
+    <ROW Feature_="MainFeature" Component_="log4net.dll"/>
     <ROW Feature_="MainFeature" Component_="Newtonsoft.Json.dll"/>
-    <ROW Feature_="MainFeature" Component_="Notifications.Wpf.dll"/>
-    <ROW Feature_="MainFeature" Component_="Ookii.Dialogs.Wpf.dll"/>
-    <ROW Feature_="MainFeature" Component_="RequestProcessorLib.dll"/>
-    <ROW Feature_="MainFeature" Component_="System.Net.Http.Formatting.dll"/>
     <ROW Feature_="MainFeature" Component_="SHORTCUTDIR"/>
     <ROW Feature_="MainFeature" Component_="RemoteBacup"/>
+    <ROW Feature_="MainFeature" Component_="Notifications.Wpf.dll"/>
+    <ROW Feature_="MainFeature" Component_="Ookii.Dialogs.Wpf.dll"/>
     <ROW Feature_="MainFeature" Component_="Quartz.dll"/>
+    <ROW Feature_="MainFeature" Component_="RequestProcessorLib.dll"/>
+    <ROW Feature_="MainFeature" Component_="System.Net.Http.Formatting.dll"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.MsiIconsComponent">
     <ROW Name="SystemFoldermsiexec.exe" SourcePath="&lt;AI_RES&gt;uninstall.ico" Index="0"/>
@@ -203,11 +208,6 @@
     <ROW Registry="Version" Root="-1" Key="Software\[Manufacturer]\[ProductName]" Name="Version" Value="[ProductVersion]" Component_="ProductInformation"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.MsiShortsComponent">
-    <ROW Shortcut="RemoteBackUpClient" Directory_="APPDIR" Name="REMOTE~1|RemoteBackUpClient" Component_="RemoteBackUpClient.exe" Target="[#RemoteBackUpClient.exe]" Hotkey="0" Icon_="cat.exe" IconIndex="0" ShowCmd="1" WkDir="APPDIR" CustomFlags="1"/>
-    <ROW Shortcut="RemoteBackUpClient_1" Directory_="SHORTCUTDIR" Name="REMOTE~1|RemoteBackUpClient" Component_="RemoteBackUpClient.exe" Target="[#RemoteBackUpClient.exe]" Hotkey="0" Icon_="cat.exe" IconIndex="0" ShowCmd="1" WkDir="APPDIR" CustomFlags="1"/>
-    <ROW Shortcut="RemoteBackUpClient_2" Directory_="DesktopFolder" Name="REMOTE~1|RemoteBackUpClient" Component_="RemoteBackUpClient.exe" Target="[#RemoteBackUpClient.exe]" Hotkey="0" Icon_="cat.exe" IconIndex="0" ShowCmd="1" WkDir="APPDIR" CustomFlags="1"/>
-    <ROW Shortcut="RemoteBackUpClient_3" Directory_="RemoteBacup_Dir" Name="REMOTE~1|RemoteBackUpClient" Component_="RemoteBackUpClient.exe" Target="[#RemoteBackUpClient.exe]" Hotkey="0" Icon_="cat.exe" IconIndex="0" ShowCmd="1" WkDir="APPDIR" CustomFlags="1"/>
-    <ROW Shortcut="UninstallProductNameProductVersio_1" Directory_="APPDIR" Name="UNINST~1.0|Uninstall [|ProductName] [|ProductVersion]" Component_="ProductInformation" Target="[SystemFolder]msiexec.exe" Arguments="/x [ProductCode]" Hotkey="0" Icon_="SystemFoldermsiexec.exe" IconIndex="0" ShowCmd="1"/>
     <ROW Shortcut="UninstallProductNameProductVersion" Directory_="SHORTCUTDIR" Name="UNINST~1.0|Uninstall [|ProductName] [|ProductVersion]" Component_="ProductInformation" Target="[SystemFolder]msiexec.exe" Arguments="/x [ProductCode]" Hotkey="0" Icon_="SystemFoldermsiexec.exe" IconIndex="0" ShowCmd="1"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.MsiThemeComponent">

@@ -29,14 +29,17 @@ namespace RemoteBackUpClient.Jobs
 
         public async Task Execute(IJobExecutionContext context)
         {
-            foreach (var listItem in _settings.List)
+            Logger.Log.Info("Выполнение задачи для планировщика.");
+            Parallel.ForEach<ListItem>(_settings.List, listItem =>
             {
-                if (listItem.UseSchedule)
-                {
-                    var path = Path.Combine(_settings.DefaultPath, listItem.DbName);
-                    _requestSender.InvokeAction(listItem.Url, listItem.DbName, path, ActionList.CreateNewBackup);
-                }
-            }
+                if (!listItem.UseSchedule) return;
+                var path = Path.Combine(_settings.DefaultPath, listItem.DbName);
+                Logger.Log.InfoFormat("БД: {0}", listItem.DbName);
+                Logger.Log.InfoFormat("URL: {0}", listItem.Url);
+                Logger.Log.InfoFormat("Путь для сохранения: {0}", path);
+                _requestSender.InvokeAction(listItem.Url, listItem.DbName, path, ActionList.CreateNewBackup);
+            });
+            Logger.Log.Info("Задача выполнена.");
         }
     }
 }

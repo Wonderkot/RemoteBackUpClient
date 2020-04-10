@@ -89,9 +89,10 @@
         <Label Grid.Column="0" Grid.Row="4">File Name:</Label>
         <TextBox Grid.Column="1" Grid.Row="4"  Name="FileNameTb"  />
         <!--Buttons -->
-        <Button Name="CheckBtn" Grid.Column="1" Grid.Row="5" Click="CheckBtn_OnClick" HorizontalAlignment="Right"  Width="100" Margin="0,0,235,5">Check last</Button>
-        <Button Name="GetLastBtn" Grid.Column="1" Grid.Row="5" Click="GetLastBtn_OnClick" HorizontalAlignment="Right"  Width="100" Margin="96,0,120,5" >Get Last</Button>
-        <Button Name="ExecuteBtn" Grid.Column="1" Grid.Row="5" Click="ExecuteBtn_OnClick" HorizontalAlignment="Right"  Width="100" Margin="0,0,5,5">Get New</Button>
+        <Button Name="CheckBtn" Grid.Column="1" Grid.Row="5" Click="CheckBtn_OnClick" HorizontalAlignment="Right"  Width="70" Margin="0,0,210,5">Check last</Button>
+        <Button Name="GetLastBtn" Grid.Column="1" Grid.Row="5" Click="GetLastBtn_OnClick" HorizontalAlignment="Right"  Width="70" Margin="96,0,105,5" >Get Last</Button>
+        <Button Name="ExecuteBtn" Grid.Column="1" Grid.Row="5" Click="ExecuteBtn_OnClick" HorizontalAlignment="Right"  Width="70" Margin="0,0,5,5">Get New</Button>
+        <Button Name="GetAllBtn" Grid.Column="1" Grid.Row="5" Click="GetAllBtn_OnClick" HorizontalAlignment="Right" Width="50" Margin="0,0,300,5">Get All</Button>
         <Button Name="ClearBtn" Grid.Column="0" Grid.Row="5" Click="ClearBtn_OnClick" HorizontalAlignment="Left" Width="50" Margin="5,0,5,5" >Clear</Button>
         <!-- Console-->
         <ScrollViewer Grid.Column="0" Grid.Row="6" Grid.ColumnSpan="2" Name="ScrollViewer">

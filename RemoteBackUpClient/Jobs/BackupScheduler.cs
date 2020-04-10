@@ -1,6 +1,7 @@
 ﻿using System;
 using Quartz;
 using Quartz.Impl;
+using RemoteBackUpClient.Utils;
 
 namespace RemoteBackUpClient.Jobs
 {
@@ -8,6 +9,7 @@ namespace RemoteBackUpClient.Jobs
     {
         public static async void Start()
         {
+            Logger.Log.Info("--- Запуск планировщика ... ---");
             IScheduler scheduler = await StdSchedulerFactory.GetDefaultScheduler();
             await scheduler.Start();
 

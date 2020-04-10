@@ -6,6 +6,7 @@ using Newtonsoft.Json.Linq;
 using RequestProcessorLib.Interfaces;
 using RequestProcessorLib.Util;
 using Flurl;
+using log4net;
 
 namespace RequestProcessorLib.Classes
 {
@@ -20,16 +21,19 @@ namespace RequestProcessorLib.Classes
 
         private readonly RequestManager _manager;
         private const string ApiUrl = "/api/remoteBackup";
+        public ILog Log { get; set; }
 
         public RequestSender()
         {
             _manager = new RequestManager();
+            
         }
 
         private string CreateNewBackupRequest(string url, string dbName, string destination)
         {
             ShowMessage?.Invoke("Send request ... ");
             url = url.AppendPathSegment(ApiUrl);
+            Log.InfoFormat("Send request to url {0}", url);
             Task<string> result = _manager.Post(url, dbName);
             ShowMessage?.Invoke(result.Result);
 
@@ -42,6 +46,7 @@ namespace RequestProcessorLib.Classes
                     ShowMessage?.Invoke("Backup created, start downloading...");
                     url = url.AppendPathSegment(GetFileMethod).AppendPathSegment(file);
                     ShowMessage?.Invoke(url);
+                    Log.InfoFormat("Try download file by url {0}", url);
                     var res = _manager.GetFile(url, destination);
                     if (!string.IsNullOrEmpty(res.Result))
                     {
